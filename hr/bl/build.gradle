@@ -1,5 +1,9 @@
 apply plugin: 'java'
 dependencies {
-implementation files('../dl/dist/dl.jar')
-implementation files('../common/dist/hr-common.jar') //data about enums
+implementation files('../../WEB-INF/lib/dbdl.jar')
+implementation files('../../WEB-INF/lib/hr-common.jar') //data about enums
+}
+
+jar {
+destinationDirectory = file('../../WEB-INF/lib')
 }

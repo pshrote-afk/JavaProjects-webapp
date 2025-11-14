@@ -1,4 +1,8 @@
 apply plugin: 'java'
 dependencies {
-implementation files('../common/dist/hr-common.jar')
+implementation files('../../WEB-INF/lib/hr-common.jar')
+}
+
+jar {
+destinationDirectory = file('../../WEB-INF/lib')
 }

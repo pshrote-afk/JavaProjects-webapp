@@ -1,7 +1,0 @@
-apply plugin: 'java'
-dependencies {
-implementation files('../dl/dist/dl.jar')
-implementation files('../bl/build/libs/bl.jar')
-implementation files('../common/dist/hr-common.jar')
-implementation fileTree(dir: './libs/itext7/',include: ['*.jar'])
-}

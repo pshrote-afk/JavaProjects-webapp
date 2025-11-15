@@ -1,0 +1,218 @@
+<script src='jquery/jquery-jtable/jquery.jtable.min.js'></script>
+<script>
+function initStudentAddFormDialog()
+{
+$("#studentAddFormDialog").dialog({
+modal:true,
+autoOpen: false,
+width:"750px",
+      show: {
+        effect: "blind",
+        duration: 500
+      },
+      hide: {
+        effect: "blind",
+        duration: 500
+      }
+    });
+}
+
+function initValidateAddForm()
+{
+	$("#studentAddForm").validate({
+		rules:{
+			name: {required: true, minlength: 2},
+			courseCode: {required: true},
+			dateOfBirth: {required: true},
+			gender: {required: true},
+			fees: {required: true},
+			enrollmentNumber: {required: true},
+			aadharCardNumber: {required: true}
+		},
+		messages:{
+			name: {required:"Enter a name",minlength:"Name must be atleast 2 characters"},
+			courseCode: "Select course",
+			dateOfBirth: "Select date of birth",
+			gender: "Select gender",
+			fees: "Enter fees",
+			enrollmentNumber: "Enter enrollment number",
+			aadharCardNumber: "Enter aadhar card number"
+		},
+		errorPlacement:function(error,element){
+			$("#"+element.attr("name")+"ErrorSection").html(error);		//error is actually a reference to a label which has error text message. 
+		}								//it has "error" class
+
+	});	
+
+}
+
+function populateCourses()
+{
+fetch("courses/getAll")
+.then(response => response.json())
+.then(data => {
+courses = data.Records;
+let courseCode = $("#courseCode");
+for(let k=0;k<courses.length;k++)
+{
+var option = $("<option>").val(courses[k].code).text(courses[k].title);
+courseCode.append(option);
+}
+})
+.catch(error => {
+alert("Error while getting all courses: " + error);
+})
+}
+
+function loadStudentsView()
+{
+let serialNumber = 1;
+$("#studentsView").jtable({
+title:"List of Students",
+actions:{
+listAction:function(jtParams){
+return $.get("students/getAll",jtParams);	//jtable sends some 'filter' parameters with the get request.
+},
+createAction:"students/add",
+updateAction:"students/update",
+deleteAction:"students/delete"
+},
+fields:{
+sno:{
+	title:"S.No.", 
+	width:"5%",  
+	sorting: false, 
+	create: false, 
+	edit: false, 
+	list: true,     
+	display:function(data){
+		return serialNumber++;
+		}
+	},
+rollNo:{key:true, title: "Roll No", width: "20%"},
+name:{title: "Name", width: "35%"},
+course:{title:"Course", width: "20%", display:function(data){return data.record.course.title;}}
+},
+recordsLoaded: function(event,data){
+	$(".jtable-toolbar-item-add-record").off("click");
+	$(".jtable-toolbar-item-add-record").on("click",function(){
+		initAddStudentEventHandler();
+	});
+	
+}
+
+
+
+});
+
+$("#studentsView").addClass("ui-widget ui-widget-content");
+$("#studentsView").jtable("load");
+}
+
+function initAddStudentEventHandler()
+{
+	$("#studentAddFormDialog").dialog("open");
+	
+
+	$("#addStudentButton").button();
+	$("#addStudentButton").click(function(){
+		if($("#studentAddForm").valid())
+		{
+			alert("form is valid. now place ajax call");
+			$.ajax();
+			$("#studentAddFormDialog").dialog("close"); 
+			document.getElementById("studentAddForm").reset();
+		}
+	});
+	
+}
+
+$(()=>{
+initStudentAddFormDialog();
+initValidateAddForm();
+populateCourses();
+loadStudentsView();
+
+});
+
+</script>
+
+<div id="studentsView">
+</div>
+
+<div id='studentAddFormDialog' title='Student (Add Module)'>
+<form id='studentAddForm'>
+<table id='studentAddFormTable'>
+<tr>
+<td>Name</td>
+<td>
+<input type='text' id='name' name='name' maxlength='35' size='36' value=''>
+<span id='nameErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>
+<select id='courseCode' name='courseCode'>
+<option value='' disabled selected>&lt;Select Designation&gt;</option>
+</select>
+<span id='courseCodeErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Date of birth</td>
+<td>
+<input type='date' id='dateOfBirth' name='dateOfBirth' value='2000-01-01'>	
+<span id='dateOfBirthErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Gender</td>
+<td>
+<input type='radio' id='male' name='gender' value='M'>Male
+<input type='radio' id='female' name='gender' value='F'>Female
+<span id='genderErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Indian?</td>
+<td>
+<input type='checkbox' id='isIndian' name='isIndian' value='Y'>
+</td>
+<td>
+<span id='isIndianErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Fees</td>
+<td>
+<input type='text' id='fees' name='fees' maxlength='11' size='13' value='' style='text-align:right'>
+<span id='feesErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Enrollment number</td>
+<td>
+<input type='text' id='enrollmentNumber' name='enrollmentNumber' maxlength='15' size='16' value=''>
+<span id='enrollmentNumberErrorSection'></span>
+</td>
+</tr>
+<tr>
+<td>Aadhar Card Number</td>
+<td>
+<input type='text' id='aadharCardNumber' name='aadharCardNumber' maxlength='15' size='16' value=''>
+<span id='aadharCardNumberErrorSection'></span>
+</td>
+</tr>
+</table>
+<span id='errorSection'></span>
+<br><br>
+<table>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+<button type='button' id='addStudentButton'><span class="ui-icon ui-icon-circle-plus"></span>  Add Student</button>
+</form>
+</div>

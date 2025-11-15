@@ -28,14 +28,26 @@
     <display-name>JavaProjects-webapp</display-name>
 
     <request-character-encoding>UTF-8</request-character-encoding>
-
 <servlet>
-<servlet-name>AddEvent</servlet-name>
-<servlet-class>com.thinking.machines.hr.servlets.AddEvent</servlet-class>
+<servlet-name>CourseGetAll</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.GetAll</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>AddEvent</servlet-name>
-<url-pattern>/addEvent</url-pattern>
+<servlet-name>CourseGetAll</servlet-name>
+<url-pattern>/courses/getAll</url-pattern>
 </servlet-mapping>
+
+
+<servlet>
+<servlet-name>StudentGetAll</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.GetAll</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>StudentGetAll</servlet-name>
+<url-pattern>/students/getAll</url-pattern>
+</servlet-mapping>
+
+
+
 
 </web-app>

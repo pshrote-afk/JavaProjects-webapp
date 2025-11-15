@@ -3,6 +3,8 @@ dependencies {
 implementation files('../../WEB-INF/lib/bl.jar')
 implementation files('../../WEB-INF/lib/dbdl.jar')
 implementation files('../../WEB-INF/lib/hr-common.jar') //data about enums
+implementation fileTree(dir: '../../../../lib', include: ['*.jar'])
+implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])
 }
 
 jar {

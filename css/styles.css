@@ -1,0 +1,103 @@
+.main-container
+{
+width:90hw;
+height:auto;
+border:1px solid black;
+}
+.header-container
+{
+margin:5px;
+width:90hw;
+height:auto;
+border:1px solid black;
+}
+.logo
+{
+float:left;
+width:35px;
+height:auto;
+padding:5px;
+}
+.brand-name
+{
+float:left;
+margin-top:9px;
+margin-bottom:9px;
+font-size:20pt;
+}
+.user-panel
+{
+margin-left:1100px;
+}
+.user-icon
+{
+width:24px;
+height:24px;
+}
+.content
+{
+width:90hw;
+height:70vh;
+margin:5px;
+border:1px solid white;
+}
+.content-left-panel
+{
+height:65vh;
+margin:5px;
+float:left;
+padding:5px;
+border:1px solid black;
+}
+.content-right-panel
+{
+height:65vh;
+margin-left:105px;
+margin-right:5px;
+margin-bottom:5px;
+margin-top:5px;
+padding:5px;
+border:1px solid black;
+overflow:auto;
+}
+.error
+{
+color:red;
+}
+.footer
+{
+width:90hw;
+height:auto;
+margin:5px;
+text-align:center;
+border:1px solid footer;
+}
+
+table.designation-view-table {
+  border: 5px solid black;
+}
+
+.designation-view-table th.add-new-designation-header {
+  text-align:right;
+  padding: 5px;
+}
+.designation-view-table th.s-no {
+  width:60px;
+  text-align:center;
+}
+.designation-view-table th.designation {
+  width:200px;
+  text-align:center;
+}
+.designation-view-table th.edit {
+  width:80px;
+  text-align:center;
+}
+.designation-view-table th.delete {
+  width:80px;
+  text-align:center;
+}
+
+
+
+

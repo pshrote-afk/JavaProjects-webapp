@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang = 'en'>
+<head>
+<title>HR Application</title>
+<link rel='stylesheet' type='text/css' href='css/styles.css'></link>
+<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.css">
+<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.structure.css">
+<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.theme.css">
+<link rel="stylesheet" href="jquery/jquery-jtable/themes/jqueryui/jtable_jqueryui.min.css"> <!-- jtable's css -->
+
+<script src = 'jquery/jquery.js'></script>
+<script src = 'jquery/jquery-ui-humanity-theme/jquery-ui.js'></script>
+<script src = 'jquery/jquery-validation/jquery.validate.js'></script>
+
+<script>
+function initPanelButtons()
+{
+$('#viewCoursesButton').button();
+$('#viewCoursesButton').on("click",function(){});
+
+$('#viewStudentsButton').button();
+$('#viewStudentsButton').on("click",function(){
+$("#contentRightPanel").load("students.html");
+});
+
+
+}
+
+$(()=>{
+initPanelButtons();
+
+});
+</script>
+</head>
+<body>
+<!-- Main container starts here -->
+<div class='main-container'>
+<!-- Header container starts here -->
+<div class='header-container'>
+<img src='images/logo.png' class='logo'><div class='brand-name'>Filler Company Name</div>
+<div class='user-panel'>
+<u>Username</u>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logout'>Logout</a><br>
+<img src='/stylethree/images/user-icon.png' class='user-icon'>
+admin
+</div>
+</div><!-- Header container ends here -->
+<!-- content-section starts here -->
+<div class='content'>
+
+<!-- left panel starts here -->
+<div class='content-left-panel'>
+
+<button type='button' id='viewCoursesButton'>Courses</button><br><br>
+<button type='button' id='viewStudentsButton'>Students</button><br><br>
+
+</div><!-- left panel ends here -->
+
+<div class='content-right-panel' id='contentRightPanel'><!-- right panel starts here -->
+
+
+<h1>Welcome to Student/Course</h1>
+
+</div><!-- right panel ends here -->
+</div><!-- content-section ends here -->
+<!-- footer starts here -->
+<div class='footer'>
+&copy; Filler Company Name 2025
+</div> <!-- footer ends here -->
+</div> <!-- Main container ends here -->
+</body>
+</html>

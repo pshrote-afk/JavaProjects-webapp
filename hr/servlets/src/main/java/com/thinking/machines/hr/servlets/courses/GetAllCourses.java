@@ -11,7 +11,7 @@ import com.thinking.machines.hr.bl.managers.*;
 import com.thinking.machines.hr.bl.pojo.*;
 import com.google.gson.*;
 
-public class GetAll extends HttpServlet
+public class GetAllCourses extends HttpServlet
 {
 public void doGet(HttpServletRequest request,HttpServletResponse response)
 {

@@ -24,13 +24,13 @@ try
 pw = response.getWriter();
 StudentManagerInterface studentManager = StudentManager.getStudentManager();
 Set<StudentInterface> students = studentManager.getStudents();
+CourseInterface course;
 JsonObject jsonObject = new JsonObject();
 jsonObject.addProperty("Result","OK");
 
-jsonObject.add("Records",gson.toJsonTree(students));
-//converting to flat object:
+//jsonObject.add("Records",gson.toJsonTree(students));
 
-/*
+//manually creating object and adding so that java.util.Date is formatted to dd-MM-yyyy. Else it is sending date in format "Thu 31 Jan 12:00:00 AM" to frontend
 JsonArray jsonArray = new JsonArray();
 JsonObject jsonObject2;
 for(StudentInterface student : students)
@@ -38,18 +38,21 @@ for(StudentInterface student : students)
 jsonObject2 = new JsonObject();
 jsonObject2.addProperty("rollNo",student.getRollNo());
 jsonObject2.addProperty("name",student.getName());
-jsonObject2.addProperty("courseCode",student.getCourse().getCode());
-jsonObject2.addProperty("courseTitle",student.getCourse().getTitle());
+
+course = new Course();
+course.setCode(student.getCourse().getCode());
+course.setTitle(student.getCourse().getTitle());
+jsonObject2.add("course",gson.toJsonTree(course));
 jsonObject2.addProperty("dateOfBirth",simpleDateFormat.format(student.getDateOfBirth()));
 jsonObject2.addProperty("gender",student.getGender());
-jsonObject2.addProperty("isIndain",student.getIsIndian());
+jsonObject2.addProperty("isIndian",student.getIsIndian());
 jsonObject2.addProperty("fees",student.getFees());
 jsonObject2.addProperty("enrollmentNumber",student.getEnrollmentNumber());
 jsonObject2.addProperty("aadharCardNumber",student.getAadharCardNumber());
 jsonArray.add(jsonObject2);
 }
 jsonObject.add("Records",jsonArray);
-*/
+
 
 jsonObject.addProperty("TotalRecordCount",students.size());
 

@@ -16,17 +16,22 @@ $("#studentAddFormDialog").dialog({
       },
 	beforeClose:function(){
 		document.getElementById("studentAddForm").reset();
+		$("#studentAddForm").validate().resetForm();
 	},
 });
 }
 
 function initValidateAddForm()
 {
+	$.validator.addMethod("dateDDMMYYYY",function(value,element){
+		return (this.optional(element) || /^\d{2}-\d{2}-\d{4}$/.test(value))
+	});
+
 	$("#studentAddForm").validate({
 		rules:{
 			name: {required: true, minlength: 2},
 			courseCode: {required: true},
-			dateOfBirth: {required: true},
+			dateOfBirth: {required: true, dateDDMMYYYY: true},
 			gender: {required: true},
 			fees: {required: true, number: true},
 			enrollmentNumber: {required: true},
@@ -35,7 +40,7 @@ function initValidateAddForm()
 		messages:{
 			name: {required:"Enter a name",minlength:"Name must be atleast 2 characters"},
 			courseCode: "Select course",
-			dateOfBirth: "Select date of birth",
+			dateOfBirth: {required: "Select date of birth", dateDDMMYYYY: "Date format DD-MM-YYYY only"},
 			gender: "Select gender",
 			fees: {required: "Enter fees", number: "Enter numbers"},
 			enrollmentNumber: "Enter enrollment number",
@@ -143,9 +148,15 @@ $("#studentsView").jtable("load");
 
 function initAddStudentEventHandler()
 {
+	$("#studentAddFormDialog").dialog("option", "title", "Student (Add Module)");
+	$("#addStudentButton").html("<span class=\"ui-icon ui-icon-circle-plus\"></span>  Add Student");
 	$("#studentAddFormDialog").dialog("open");
 	
-
+	if($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
+	{
+		$("#addStudentButton").button("destroy");
+		$("#addStudentButton").off("click");
+	}
 	$("#addStudentButton").button();
 	$("#addStudentButton").click(function(){
 
@@ -153,7 +164,6 @@ function initAddStudentEventHandler()
 
 		if($("#studentAddForm").valid())
 		{
-			
 			fetch("students/add", {
 				method: "POST",
 				headers: {
@@ -202,7 +212,86 @@ function initAddStudentEventHandler()
 	
 }
 
+function initEditStudentEventHandler(record)
+{
+	console.log(record);
+	$("#rollNo").val(record.rollNo);
+	console.log(record.rollNo);
+	console.log($("#rollNo").val());
+	$("#name").val(record.name);
+	$("#courseCode").val(record.course.code);
+	$("#dateOfBirth").val(record.dateOfBirth);
+	if(record.gender=="M") $("#male").prop("checked",true).checkboxradio("refresh");
+	else if(record.gender=="F") $("#female").prop("checked",true).checkboxradio("refresh");
+	if(record.isIndian==true) document.getElementById("isIndian").checked = true;
+	$("#fees").val(record.fees);
+	$("#enrollmentNumber").val(record.enrollmentNumber);
+	$("#aadharCardNumber").val(record.aadharCardNumber);
+	
 
+	$("#studentAddFormDialog").dialog("option", "title", "Student (Edit Module)");
+	$("#addStudentButton").html("<span style='scale:1.5' class=\"ui-icon ui-icon-refresh\"></span>  Update Student");
+	$("#studentAddFormDialog").dialog("open");
+	
+	if($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
+	{
+		$("#addStudentButton").button("destroy");
+		$("#addStudentButton").off("click");
+	}	
+	$("#addStudentButton").button();
+	$("#addStudentButton").click(function(){
+
+		window.serverErrors = null;
+
+		if($("#studentAddForm").valid())
+		{
+			fetch("students/update", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: $("#studentAddForm").serialize()				
+			})
+			.then((response) => {return response.json()})
+			.then((data) => {
+					if(data.success)
+					{
+						$("<p>")
+						.text(data.message)		//doubt: what will exception message come as 
+						.dialog({
+						modal:true,
+						beforeClose:function(){
+						$("#studentAddFormDialog").dialog("close"); 
+						document.getElementById("studentAddForm").reset();
+						$("#studentAddForm").validate().resetForm();
+						},
+						buttons: {
+							OK : function(){
+								$(this).dialog("close");
+								$("#studentAddFormDialog").dialog("close"); 
+								document.getElementById("studentAddForm").reset();
+								$("#studentAddForm").validate().resetForm();
+							}
+						}			
+						});
+						$("#studentsView").jtable("reload");
+					}
+					else
+					{	
+						var validator = $("#studentAddForm").data("validator");
+						validator.showErrors(data.serverErrors);
+					}
+					})
+			.catch((error => {
+				$("#studentAddFormDialog").dialog("close"); 
+				document.getElementById("studentAddForm").reset();
+				alert("Error while updating student: " + error);
+			}))
+			
+		}
+	});
+	
+}
 
 
 $(()=>{
@@ -222,6 +311,7 @@ loadStudentsView();
 
 <div id='studentAddFormDialog' title='Student (Add Module)'>
 <form id='studentAddForm'>
+<input type="hidden" id="rollNo" name="rollNo">
 <table id='studentAddFormTable'>
 <tr>
 <td>Name</td>
@@ -295,89 +385,10 @@ loadStudentsView();
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </td>
 <td>
-<button type='button' id='addStudentButton'><span class="ui-icon ui-icon-circle-plus"></span>  Add Student</button>
+<button type='button' id='addStudentButton'></button>
 </form>
 </div>
 
-<!--
-<div id='studentEditFormDialog' title='Student (Edit Module)'>
-<form id='studentEditForm'>
-<table id='studentEditFormTable'>
-<tr>
-<td>Name</td>
-<td>
-<input type='text' id='name' name='name' maxlength='35' size='36' value=''>
-<span id='nameErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Course</td>
-<td>
-<select id='courseCode' name='courseCode'>
-<option value='' disabled selected>&lt;Select Course&gt;</option>
-</select>
-<span id='courseCodeErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Date of birth</td>
-<td>
-<input type='text' id='dateOfBirth' name='dateOfBirth' value='01-01-2000'>	
-<span id='dateOfBirthErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Gender</td>
-<td>
-<input type='radio' id='male' name='gender' value='M'>
-<label for='male'>Male</label>
-<input type='radio' id='female' name='gender' value='F'>
-<label for='female'>Female</label>
-<span id='genderErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Indian?</td>
-<td>
-<input type='checkbox' id='isIndian' name='isIndian' value='Y'>
-</td>
-<td>
-<span id='isIndianErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Fees</td>
-<td>
-<input type='text' id='fees' name='fees' maxlength='11' size='13' value='' style='text-align:right'>
-<span id='feesErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Enrollment number</td>
-<td>
-<input type='text' id='enrollmentNumber' name='enrollmentNumber' maxlength='15' size='16' value=''>
-<span id='enrollmentNumberErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Aadhar Card Number</td>
-<td>
-<input type='text' id='aadharCardNumber' name='aadharCardNumber' maxlength='15' size='16' value=''>
-<span id='aadharCardNumberErrorSection'></span>
-</td>
-</tr>
-</table>
-<span id='errorSection'></span>
-<br><br>
-<table>
-<tr>
-<td>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td>
-<td>
-<button type='button' id='addStudentButton'><span class="ui-icon ui-icon-circle-plus"></span>  Add Student</button>
-</form>
-</div>
--->
+
 
 

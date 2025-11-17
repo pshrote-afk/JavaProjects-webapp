@@ -29,24 +29,41 @@
 
     <request-character-encoding>UTF-8</request-character-encoding>
 <servlet>
-<servlet-name>CourseGetAll</servlet-name>
-<servlet-class>com.thinking.machines.hr.servlets.courses.GetAll</servlet-class>
+<servlet-name>GetAllCourses</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.GetAllCourses</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>CourseGetAll</servlet-name>
+<servlet-name>GetAllCourses</servlet-name>
 <url-pattern>/courses/getAll</url-pattern>
 </servlet-mapping>
 
 
 <servlet>
-<servlet-name>StudentGetAll</servlet-name>
-<servlet-class>com.thinking.machines.hr.servlets.students.GetAll</servlet-class>
+<servlet-name>GetAllStudents</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.GetAllStudents</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>StudentGetAll</servlet-name>
+<servlet-name>GetAllStudents</servlet-name>
 <url-pattern>/students/getAll</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>AddStudent</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.AddStudent</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>AddStudent</servlet-name>
+<url-pattern>/students/add</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>UpdateStudent</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.UpdateStudent</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>UpdateStudent</servlet-name>
+<url-pattern>/students/update</url-pattern>
+</servlet-mapping>
 
 
 

@@ -8,7 +8,7 @@ import com.thinking.machines.hr.dl.interfaces.dto.*;
 import java.io.*; // for RandomAccessFile class
 import java.math.*; // for BigDecimal class
 import java.sql.*;
-import java.text.*; // for SimpleDateFormat class
+import java.text.SimpleDateFormat;
 import java.util.*; // for Set collection, and Date class
 
 public class StudentDAO implements StudentDAOInterface {
@@ -128,7 +128,10 @@ public class StudentDAO implements StudentDAOInterface {
                   + " WHERE roll_no=?");
       preparedStatement.setString(1, name);
       preparedStatement.setInt(2, courseCode);
-      java.sql.Date sqlDateOfBirth = new java.sql.Date(dateOfBirth.getTime());
+
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      java.sql.Date sqlDateOfBirth = java.sql.Date.valueOf(simpleDateFormat.format(dateOfBirth));
+
       preparedStatement.setDate(3, sqlDateOfBirth);
       preparedStatement.setString(4, String.valueOf(gender));
       preparedStatement.setBoolean(5, isIndian);
@@ -251,7 +254,8 @@ public class StudentDAO implements StudentDAOInterface {
       String name;
       int courseCode;
       String title;
-      java.sql.Date dateOfBirth; // cause we're receiving Date object from an sql database
+      java.sql.Date sqlDateOfBirth; // cause we're receiving Date object from an sql database
+      java.util.Date dateOfBirth;
       String gender;
       boolean isIndian;
       BigDecimal fees;
@@ -263,8 +267,11 @@ public class StudentDAO implements StudentDAOInterface {
         name = resultSet.getString("name").trim();
         courseCode = resultSet.getInt("course_code");
         title = resultSet.getString("title").trim();
-        dateOfBirth = resultSet.getDate("date_of_birth");
-        gender = resultSet.getString("gender");
+
+        sqlDateOfBirth = resultSet.getDate("date_of_birth");
+	dateOfBirth = new java.util.Date(sqlDateOfBirth.getTime());
+
+	gender = resultSet.getString("gender");
         isIndian = resultSet.getBoolean("is_indian");
         fees = resultSet.getBigDecimal("fees");
         enrollmentNumber = resultSet.getString("enrollment_number").trim();

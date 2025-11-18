@@ -1,52 +1,37 @@
-# PL/BL/DL Application
-- Designed and programmed **Presentation Layer, Business Layer,** and **Data Layer**
-- **3-tier architecture** (PL/BL/DL) for "Student" and "Course" management with full CRUD operations
-- Swing-based GUI with event-driven architecture (Action, Mouse, Item Listeners)
-- PDFexport functionality using itext7; built with Gradle
+# Student/Course Management Web Application
 
----
+A 3-tier web application for managing students and courses using Java Servlets and Apache Tomcat.
 
-# Running HR Project Layers
-This project contains two different data layers. Any one may be used at a time.
 
-## 1. PL-BL-DL Layers (File Handling)
+## Architecture
+- **Presentation Layer**: jQuery with `jQuery UI`, `jQuery Validation`, `jTable`
+    - PDF Export: Server-side PDF generation using iText7
+- **Business Layer**: Business logic, validation, and in-memory caching
+  - **CourseManager**: Singleton manager with dual indexing (code, title)
+  - **StudentManager**: Singleton manager with multi-key indexing (rollNo, enrollmentNumber, aadharCardNumber, courseCode)
+- **Data Layer**: MySQL database
 
-Uses **File Handling** for the Data Layer and writes data into flat files.
+## Features
+- **Courses**: CRUD operations, PDF export
+- **Students**: CRUD operations with form validation, PDF export
+- **Business Layer**: 
+  - Singleton design pattern for managers
+  - In-memory caching with multiple indexed data structures for fast lookups
 
-**From `hr/pl/` directory:**  
-Include the `.jar` files of the common folder, all 3 layers, and `pl\libs\itext\*`.
+## Technology Stack
+- Java Servlets, Apache Tomcat
+- jQuery, jQuery UI, jTable
+- MySQL Database
+- iText7 (PDF export)
+- Gradle
 
-```bash
-java -classpath ..\common\dist\hr-common.jar;
-                ..\dl\dist\dl.jar;
-                ..\bl\build\libs\bl.jar;
-                .\build\libs\pl.jar;
-                .\libs\itext7\*;. 
-                com.thinking.machines.hr.pl.Main
-```
+## Servlet Endpoints
+**Courses:** `/courses/getAll`, `/courses/add`, `/courses/update`, `/courses/delete`, `/courses/pdf`
 
-## 2. PL-BL-DBDL Layers (MySQL Database)
+**Students:** `/students/getAll`, `/students/add`, `/students/update`, `/students/delete`, `/students/pdf`
 
-Uses **MySQL Database** for the Data Layer and writes into database.
-
-**From `hr/pl/` directory:**  
-Include `.jar` file of common folder, .jar file of all 3 layers, `pl\libs\itext\*`, `dbdl\libs\mysql-connector-j-9.3.0.jar`.
-
-```bash
-java -classpath ..\common\dist\hr-common.jar;
-                ..\dbdl\build\libs\dbdl.jar;
-                ..\bl\build\libs\bl.jar;
-                .\build\libs\pl.jar;
-                .\libs\itext7\*;
-                ..\dbdl\libs\*;. 
-                com.thinking.machines.hr.pl.Main
-
-```
-
----
-### Implementation Status
-Note: The presentation layer for the Student entity is not yet implemented
-| Entity   | DL | DBDL | BL | PL |
-|----------|----|----|----|----|
-| Course   | Done | Done | Done | Done  |
-| Student  | Done | Done | Done | **[PENDING]**  |
+## Setup
+1. Configure MySQL database connection in DBDL layer
+2. Build project using Gradle
+3. Deploy to Apache Tomcat
+4. Access application at `http://localhost:8080/[project-name]/`

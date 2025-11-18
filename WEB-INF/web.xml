@@ -65,6 +65,14 @@
 <url-pattern>/students/update</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>DeleteStudent</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.DeleteStudent</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>DeleteStudent</servlet-name>
+<url-pattern>/students/delete</url-pattern>
+</servlet-mapping>
 
 
 </web-app>

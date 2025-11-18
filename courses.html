@@ -5,18 +5,18 @@ function loadCoursesView()
 let serialNumber = 1;
 $("#coursesView").jtable({
 title:"List of Courses",
-/* toolbar: {
+toolbar: {
 	items: [
 		{
 			icon: '',
 			text: "<span class='ui-icon ui-icon-document''></span> Export to PDF",
 			click: function(){
-				// call to servlet which will call exportToPDF()
+				window.location.href = 'courses/pdf';
 			}
 		}
 	]
 },
-*/
+
 actions:{
 listAction:function(jtParams){
 return $.get("courses/getAll",jtParams);	//jtable sends some 'filter' parameters with the get request.

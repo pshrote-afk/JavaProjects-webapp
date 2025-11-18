@@ -64,6 +64,17 @@
 <url-pattern>/courses/delete</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>ExportCoursesToPdf</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.ExportCoursesToPdf</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ExportCoursesToPdf</servlet-name>
+<url-pattern>/courses/pdf</url-pattern>
+</servlet-mapping>
+
+
+
 
 <servlet>
 <servlet-name>GetAllStudents</servlet-name>
@@ -101,6 +112,14 @@
 <url-pattern>/students/delete</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>ExportStudentsToPdf</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.students.ExportStudentsToPdf</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ExportStudentsToPdf</servlet-name>
+<url-pattern>/students/pdf</url-pattern>
+</servlet-mapping>
 
 
 

@@ -16,20 +16,45 @@
 function initPanelButtons()
 {
 $('#viewCoursesButton').button();
-$('#viewCoursesButton').on("click",function(){});
+$('#viewCoursesButton').on("click",function(){
+$("#contentRightPanel").load("courses.html");
+globalContentRightPanel = "courses";
+reloadPanelButtons();
+});
 
 $('#viewStudentsButton').button();
 $('#viewStudentsButton').on("click",function(){
 $("#contentRightPanel").load("students.html");
+globalContentRightPanel = "students";
+reloadPanelButtons();
 });
 
+$("#homeButton").button();
+$("#homeButton").on("click",function(){
 
+homeContent = document.createElement("h1");
+homeContent.innerHTML = "Welcome to Student/Course";
+document.getElementById("contentRightPanel").innerHTML = "";
+document.getElementById("contentRightPanel").appendChild(homeContent);
+
+globalContentRightPanel = "home";
+reloadPanelButtons();
+});
+$("#homeButton").trigger("click");
 }
 
 $(()=>{
 initPanelButtons();
-
 });
+
+let globalContentRightPanel;
+function reloadPanelButtons()
+{
+if(globalContentRightPanel.toLowerCase() === "home") $("#homeButton").hide();
+else $("#homeButton").show();
+
+}
+
 </script>
 </head>
 <body>
@@ -51,15 +76,16 @@ admin
 <!-- left panel starts here -->
 <div class='content-left-panel'>
 
-<button type='button' id='viewCoursesButton'>Courses</button><br><br>
+&thinsp;<button type='button' id='viewCoursesButton'>Courses</button><br>
 <button type='button' id='viewStudentsButton'>Students</button><br><br>
+&nbsp;&nbsp;&nbsp;<button type='button' id='homeButton'>Home</button><br><br>
 
 </div><!-- left panel ends here -->
 
 <div class='content-right-panel' id='contentRightPanel'><!-- right panel starts here -->
 
 
-<h1>Welcome to Student/Course</h1>
+
 
 </div><!-- right panel ends here -->
 </div><!-- content-section ends here -->

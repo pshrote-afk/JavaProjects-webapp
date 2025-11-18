@@ -220,7 +220,12 @@ public class CourseManager implements CourseManagerInterface {
     // do not return original data structure
     // return clone of our data structure
     Set<CourseInterface> courses;
-    courses = new TreeSet<>();
+    courses = new TreeSet<>(new Comparator<CourseInterface>(){
+		public int compare(CourseInterface course1, CourseInterface course2)
+		{
+			return course1.getTitle().compareToIgnoreCase(course2.getTitle());
+		}
+	});
 
     this.coursesSet.forEach(
         (CourseInterface course) -> {

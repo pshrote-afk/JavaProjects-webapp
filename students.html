@@ -141,7 +141,9 @@ sno:{
 	edit: false, 
 	list: true,     
 	display:function(data){
-		return serialNumber++;
+		let sno = serialNumber;
+		serialNumber++;
+		return (sno + ".");
 		}
 	},
 rollNo:{key:true, title: "Roll No", width: "20%"},

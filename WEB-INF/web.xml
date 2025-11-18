@@ -37,6 +37,33 @@
 <url-pattern>/courses/getAll</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>AddCourse</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.AddCourse</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>AddCourse</servlet-name>
+<url-pattern>/courses/add</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>UpdateCourse</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.UpdateCourse</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>UpdateCourse</servlet-name>
+<url-pattern>/courses/update</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>DeleteCourse</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.courses.DeleteCourse</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>DeleteCourse</servlet-name>
+<url-pattern>/courses/delete</url-pattern>
+</servlet-mapping>
+
 
 <servlet>
 <servlet-name>GetAllStudents</servlet-name>
@@ -73,6 +100,8 @@
 <servlet-name>DeleteStudent</servlet-name>
 <url-pattern>/students/delete</url-pattern>
 </servlet-mapping>
+
+
 
 
 </web-app>

@@ -110,7 +110,6 @@ jsonObject.add("success",new JsonPrimitive(false));
 jsonObject.addProperty("message","Error while adding student");
 String jsonString = gson.toJson(jsonObject); 
 pw.write(jsonString);
-pw.write(jsonString);
 pw.flush();
 }
 

@@ -1,0 +1,101 @@
+<script src='jquery/jquery-jtable/jquery.jtable.min.js'></script>
+<script>
+function loadCoursesView()
+{
+let serialNumber = 1;
+$("#coursesView").jtable({
+title:"List of Courses",
+/* toolbar: {
+	items: [
+		{
+			icon: '',
+			text: "<span class='ui-icon ui-icon-document''></span> Export to PDF",
+			click: function(){
+				// call to servlet which will call exportToPDF()
+			}
+		}
+	]
+},
+*/
+actions:{
+listAction:function(jtParams){
+return $.get("courses/getAll",jtParams);	//jtable sends some 'filter' parameters with the get request.
+},
+createAction:"courses/add",
+updateAction:"courses/update",
+deleteAction:"courses/delete"
+},
+fields:{
+sno:{
+	title:"S.No.", 
+	width:"5%",  
+	sorting: false, 
+	create: false, 
+	edit: false, 
+	list: true,     
+	display:function(data){
+		let sno = serialNumber;
+		serialNumber++;
+		return (sno + ".");
+		}
+	},
+code:{key: true, list: false},		//list: false means it wont be visible in jtable. And key: true means it will be sent with requests.
+title:{title: "Title", width: "35%"},
+},
+loadingRecords: function(){
+	serialNumber = 1;
+},
+recordsLoaded: function(event,data){
+
+	$("#coursesView .jtable-data-row").css("cursor","pointer");
+	$("#coursesView .jtable-data-row").off("click");
+	$("#coursesView .jtable-data-row").on("click",function(){
+		let clickedRow = $(this);
+		selectCourseRow(clickedRow);
+	});
+},
+recordAdded: function(event,data){
+	// no manual reload needed as data is added to the end.
+	// might need manual reload if we add sort alphabetically.
+},
+recordUpdated: function(event,data){
+	//manual reload needed to reset serialNumber to 1.
+	$("#coursesView").jtable("reload");
+},
+recordDeleted: function(event,data){
+	//manual reload needed to reset serialNumber to 1.
+	$("#coursesView").jtable("reload");
+}
+
+});
+
+$("#coursesView").addClass("ui-widget ui-widget-content");
+$("#coursesView").jtable("load");
+}
+$(()=>{
+    loadCoursesView();
+});
+
+selectedJTableRow = null;
+function selectCourseRow(clickedRow)
+{
+	if(clickedRow==selectedJTableRow) return;
+
+	if(selectedJTableRow!=null)
+	{
+		selectedJTableRow.css("background-color",selectedJTableRow.oldBackgroundColor);
+		selectedJTableRow.css("color",selectedJTableRow.oldColor);
+	}
+	clickedRow.oldBackgroundColor = clickedRow.css("background-color");
+	clickedRow.oldColor = clickedRow.css("color");
+	clickedRow.css("background-color","gray");
+	clickedRow.css("color","white");
+
+	selectedJTableRow = clickedRow;
+}
+</script>
+<h2>Courses</h2>
+<div id="coursesViewContainer" style="height: 60%; width: 600px; overflow-y: auto; border: 3px groove black">
+<div id="coursesView">
+</div>
+</div>

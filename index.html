@@ -1,98 +1,101 @@
 <!DOCTYPE HTML>
-<html lang = 'en'>
+<html lang='en'>
+
 <head>
-<title>HR Application</title>
-<link rel='stylesheet' type='text/css' href='css/styles.css'></link>
-<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.css">
-<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.structure.css">
-<link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.theme.css">
-<link rel="stylesheet" href="jquery/jquery-jtable/themes/jqueryui/jtable_jqueryui.min.css"> <!-- jtable's css -->
+    <title>HR Application</title>
+    <link rel='stylesheet' type='text/css' href='css/styles.css'>
+    </link>
+    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.css">
+    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.structure.css">
+    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.theme.css">
+    <link rel="stylesheet" href="jquery/jquery-jtable/themes/jqueryui/jtable_jqueryui.min.css"> <!-- jtable's css -->
 
-<script src = 'jquery/jquery.js'></script>
-<script src = 'jquery/jquery-ui-humanity-theme/jquery-ui.js'></script>
-<script src = 'jquery/jquery-validation/jquery.validate.js'></script>
+    <script src='jquery/jquery.js'></script>
+    <script src='jquery/jquery-ui-humanity-theme/jquery-ui.js'></script>
+    <script src='jquery/jquery-validation/jquery.validate.js'></script>
 
-<script>
-function initPanelButtons()
-{
-$('#viewCoursesButton').button();
-$('#viewCoursesButton').on("click",function(){
-$("#contentRightPanel").load("courses.html");
-globalContentRightPanel = "courses";
-reloadPanelButtons();
-});
+    <script>
+        function initPanelButtons() {
+            $('#viewCoursesButton').button();
+            $('#viewCoursesButton').on("click", function () {
+                $("#contentRightPanel").load("courses.html");
+                globalContentRightPanel = "courses";
+                reloadPanelButtons();
+            });
 
-$('#viewStudentsButton').button();
-$('#viewStudentsButton').on("click",function(){
-$("#contentRightPanel").load("students.html");
-globalContentRightPanel = "students";
-reloadPanelButtons();
-});
+            $('#viewStudentsButton').button();
+            $('#viewStudentsButton').on("click", function () {
+                $("#contentRightPanel").load("students.html");
+                globalContentRightPanel = "students";
+                reloadPanelButtons();
+            });
 
-$("#homeButton").button();
-$("#homeButton").on("click",function(){
+            $("#homeButton").button();
+            $("#homeButton").on("click", function () {
 
-homeContent = document.createElement("h1");
-homeContent.innerHTML = "Welcome to Student/Course";
-document.getElementById("contentRightPanel").innerHTML = "";
-document.getElementById("contentRightPanel").appendChild(homeContent);
+                homeContent = document.createElement("h1");
+                homeContent.innerHTML = "Welcome to Student/Course";
+                document.getElementById("contentRightPanel").innerHTML = "";
+                document.getElementById("contentRightPanel").appendChild(homeContent);
 
-globalContentRightPanel = "home";
-reloadPanelButtons();
-});
-$("#homeButton").trigger("click");
-}
+                globalContentRightPanel = "home";
+                reloadPanelButtons();
+            });
+            $("#homeButton").trigger("click");
+        }
 
-$(()=>{
-initPanelButtons();
-});
+        $(() => {
+            initPanelButtons();
+        });
 
-let globalContentRightPanel;
-function reloadPanelButtons()
-{
-if(globalContentRightPanel.toLowerCase() === "home") $("#homeButton").hide();
-else $("#homeButton").show();
+        let globalContentRightPanel;
+        function reloadPanelButtons() {
+            if (globalContentRightPanel.toLowerCase() === "home") $("#homeButton").hide();
+            else $("#homeButton").show();
 
-}
+        }
 
-</script>
+    </script>
 </head>
+
 <body>
-<!-- Main container starts here -->
-<div class='main-container'>
-<!-- Header container starts here -->
-<div class='header-container'>
-<img src='images/logo.png' class='logo'><div class='brand-name'>Filler Company Name</div>
-<div class='user-panel'>
-<u>Username</u>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logout'>Logout</a><br>
-<img src='/stylethree/images/user-icon.png' class='user-icon'>
-admin
-</div>
-</div><!-- Header container ends here -->
-<!-- content-section starts here -->
-<div class='content'>
+    <!-- Main container starts here -->
+    <div class='main-container'>
+        <!-- Header container starts here -->
+        <div class='header-container'>
+            <img src='images/logo.png' class='logo'>
+            <div class='brand-name'>Filler Company Name</div>
+            <div class='user-panel'>
+                <u>Username</u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logout'>Logout</a><br>
+                <img src='images/user-icon.png' class='user-icon'>
+                admin
+            </div>
+        </div><!-- Header container ends here -->
+        <!-- content-section starts here -->
+        <div class='content'>
 
-<!-- left panel starts here -->
-<div class='content-left-panel'>
+            <!-- left panel starts here -->
+            <div class='content-left-panel'>
 
-&thinsp;<button type='button' id='viewCoursesButton'>Courses</button><br>
-<button type='button' id='viewStudentsButton'>Students</button><br><br>
-&nbsp;&nbsp;&nbsp;<button type='button' id='homeButton'>Home</button><br><br>
+                &thinsp;<button type='button' id='viewCoursesButton'>Courses</button><br>
+                <button type='button' id='viewStudentsButton'>Students</button><br><br>
+                &nbsp;&nbsp;&nbsp;<button type='button' id='homeButton'>Home</button><br><br>
 
-</div><!-- left panel ends here -->
+            </div><!-- left panel ends here -->
 
-<div class='content-right-panel' id='contentRightPanel'><!-- right panel starts here -->
-
-
+            <div class='content-right-panel' id='contentRightPanel'><!-- right panel starts here -->
 
 
-</div><!-- right panel ends here -->
-</div><!-- content-section ends here -->
-<!-- footer starts here -->
-<div class='footer'>
-&copy; Filler Company Name 2025
-</div> <!-- footer ends here -->
-</div> <!-- Main container ends here -->
+
+
+            </div><!-- right panel ends here -->
+        </div><!-- content-section ends here -->
+        <!-- footer starts here -->
+        <div class='footer'>
+            &copy; Filler Company Name 2025
+        </div> <!-- footer ends here -->
+    </div> <!-- Main container ends here -->
 </body>
+
 </html>

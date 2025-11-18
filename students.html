@@ -1,391 +1,372 @@
 <script src='jquery/jquery-jtable/jquery.jtable.min.js'></script>
 <script>
-function initStudentAddFormDialog()
-{
-$("#studentAddFormDialog").dialog({
-	modal:true,
-	autoOpen: false,
-	width:"750px",
-    show: {
-        effect: "blind",
-        duration: 500
-      },
-    hide: {
-        effect: "blind",
-        duration: 500
-      },
-	beforeClose:function(){
-		document.getElementById("studentAddForm").reset();
-		$("#studentAddForm").validate().resetForm();
-	},
-});
+	function initStudentAddFormDialog() {
+		$("#studentAddFormDialog").dialog({
+			modal: true,
+			autoOpen: false,
+			width: "750px",
+			show: {
+				effect: "blind",
+				duration: 500
+			},
+			hide: {
+				effect: "blind",
+				duration: 500
+			},
+			beforeClose: function () {
+				document.getElementById("studentAddForm").reset();
+				$("#studentAddForm").validate().resetForm();
+			},
+		});
 
-$("#studentDeleteDialog").dialog({
-	modal:true,
-	autoOpen: false,
-	width:"750px",
-    show: {
-        effect: "blind",
-        duration: 500
-      },
-    hide: {
-        effect: "explode",
-        duration: 500
-      }
-});
-
-}
-
-function initValidateAddForm()
-{
-	$.validator.addMethod("dateDDMMYYYY",function(value,element){
-		return (this.optional(element) || /^\d{2}-\d{2}-\d{4}$/.test(value))
-	});
-
-	$("#studentAddForm").validate({
-		rules:{
-			name: {required: true, minlength: 2},
-			courseCode: {required: true},
-			dateOfBirth: {required: true, dateDDMMYYYY: true},
-			gender: {required: true},
-			fees: {required: true, number: true},
-			enrollmentNumber: {required: true},
-			aadharCardNumber: {required: true}
-		},
-		messages:{
-			name: {required:"Enter a name",minlength:"Name must be atleast 2 characters"},
-			courseCode: "Select course",
-			dateOfBirth: {required: "Select date of birth", dateDDMMYYYY: "Date format DD-MM-YYYY only"},
-			gender: "Select gender",
-			fees: {required: "Enter fees", number: "Enter numbers"},
-			enrollmentNumber: "Enter enrollment number",
-			aadharCardNumber: "Enter aadhar card number"
-		},
-		errorPlacement:function(error,element){
-			$("#"+element.attr("name")+"ErrorSection").html(error);		//error is actually a reference to a label which has error text message. //it has "error" class 
-		}								
-
-	});	
-
-}
-
-function populateCourses()
-{
-fetch("courses/getAll")
-.then(response => response.json())
-.then(data => {
-courses = data.Records;
-let courseCode = $("#courseCode");
-for(let k=0;k<courses.length;k++)
-{
-var option = $("<option>").val(courses[k].code).text(courses[k].title);
-courseCode.append(option);
-}
-})
-.catch(error => {
-alert("Error while getting all courses: " + error);
-})
-}
-
-
-
-function initRadioButtons()
-{
-	$("#male, #female").checkboxradio();
-}
-
-function initDatePicker()
-{
-	$("#dateOfBirth").datepicker(
-	{
-		dateFormat:"dd-mm-yy",
-	});
-}
-
-function initControlGroup()
-{
-	$("#isIndianGroup").controlgroup();
-}
-
-function loadStudentsView()
-{
-let serialNumber = 1;
-$("#studentsView").jtable({
-title:"List of Students",
-toolbar: {
-	items: [
-		{
-			icon: '',
-			text: "<span class='ui-icon ui-icon-document''></span> Export to PDF",
-			click: function(){
-				window.location.href = 'students/pdf';
+		$("#studentDeleteDialog").dialog({
+			modal: true,
+			autoOpen: false,
+			width: "750px",
+			show: {
+				effect: "blind",
+				duration: 500
+			},
+			hide: {
+				effect: "explode",
+				duration: 500
 			}
-		}
-	]
-},
-actions:{
-listAction:function(jtParams){
-return $.get("students/getAll",jtParams);	//jtable sends some 'filter' parameters with the get request.
-},
-createAction:"students/add",
-updateAction:"students/update",
-deleteAction:"students/delete"
-},
-fields:{
-sno:{
-	title:"S.No.", 
-	width:"5%",  
-	sorting: false, 
-	create: false, 
-	edit: false, 
-	list: true,     
-	display:function(data){
-		let sno = serialNumber;
-		serialNumber++;
-		return (sno + ".");
-		}
-	},
-rollNo:{key:true, title: "Roll No", width: "20%"},
-name:{title: "Name", width: "35%"},
-course:{title:"Course", width: "20%", display:function(data){return data.record.course.title;}}
-},
-loadingRecords: function(){
-	serialNumber = 1;
-},
-recordsLoaded: function(event,data){
+		});
 
-	$("#studentsView .jtable-data-row").css("cursor","pointer");
-	$("#studentsView .jtable-data-row").off("click");
-	$("#studentsView .jtable-data-row").on("click",function(){
-		let clickedRow = $(this);
-		showDetailsForStudentRow(clickedRow);
-	});
-
-
-	$(".jtable-toolbar-item-add-record").off("click");
-	$(".jtable-toolbar-item-add-record").on("click",function(){
-		initAddStudentEventHandler();
-	});
-
-	$(".jtable-edit-command-button").off("click");
-	$(".jtable-edit-command-button").on("click",function(){
-		let record = $(this).closest("tr").data("record");
-		initEditStudentEventHandler(record);
-	});
-
-	$(".jtable-delete-command-button").off("click");
-	$(".jtable-delete-command-button").on("click",function(){
-		let record = $(this).closest("tr").data("record");
-		initDeleteStudentEventHandler(record);
-	});
-	
-}
-
-});
-
-$("#studentsView").addClass("ui-widget ui-widget-content");
-$("#studentsView").jtable("load");
-}
-
-selectedJTableRow = null;
-function showDetailsForStudentRow(clickedRow)
-{
-	if(clickedRow==selectedJTableRow) return;
-
-	if(selectedJTableRow!=null)
-	{
-		selectedJTableRow.css("background-color",selectedJTableRow.oldBackgroundColor);
-		selectedJTableRow.css("color",selectedJTableRow.oldColor);
 	}
-	clickedRow.oldBackgroundColor = clickedRow.css("background-color");
-	clickedRow.oldColor = clickedRow.css("color");
-	clickedRow.css("background-color","gray");
-	clickedRow.css("color","white");
 
-	selectedJTableRow = clickedRow;
-	//add details
-	let record = clickedRow.data("record");
-	$("#detailPanel_rollNo").html(record.rollNo);
-	$("#detailPanel_name").html(record.name);
-	$("#detailPanel_course").html(record.course.title);
-	$("#detailPanel_dateOfBirth").html(record.dateOfBirth);
-	$("#detailPanel_gender").html(record.gender);
-	$("#detailPanel_isIndian").html((record.isIndian)==true ? "True" : "False");
-	$("#detailPanel_fees").html(record.fees);
-	$("#detailPanel_enrollmentNumber").html(record.enrollmentNumber);
-	$("#detailPanel_aadharCardNumber").html(record.aadharCardNumber);
-}
+	function initValidateAddForm() {
+		$.validator.addMethod("dateDDMMYYYY", function (value, element) {
+			return (this.optional(element) || /^\d{2}-\d{2}-\d{4}$/.test(value))
+		});
 
-function initAddStudentEventHandler()
-{
-	$("#studentAddFormDialog").dialog("option", "title", "Student (Add Module)");
-	$("#addStudentButton").html("<span class=\"ui-icon ui-icon-circle-plus\"></span>  Add Student");
-	$("#studentAddFormDialog").dialog("open");
-	
-	if($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
-	{
-		$("#addStudentButton").button("destroy");
-		$("#addStudentButton").off("click");
+		$("#studentAddForm").validate({
+			rules: {
+				name: { required: true, minlength: 2 },
+				courseCode: { required: true },
+				dateOfBirth: { required: true, dateDDMMYYYY: true },
+				gender: { required: true },
+				fees: { required: true, number: true },
+				enrollmentNumber: { required: true },
+				aadharCardNumber: { required: true }
+			},
+			messages: {
+				name: { required: "Enter a name", minlength: "Name must be atleast 2 characters" },
+				courseCode: "Select course",
+				dateOfBirth: { required: "Select date of birth", dateDDMMYYYY: "Date format DD-MM-YYYY only" },
+				gender: "Select gender",
+				fees: { required: "Enter fees", number: "Enter numbers" },
+				enrollmentNumber: "Enter enrollment number",
+				aadharCardNumber: "Enter aadhar card number"
+			},
+			errorPlacement: function (error, element) {
+				$("#" + element.attr("name") + "ErrorSection").html(error);		//error is actually a reference to a label which has error text message. //it has "error" class 
+			}
+
+		});
+
 	}
-	$("#addStudentButton").button();
-	$("#addStudentButton").click(function(){
 
-		window.serverErrors = null;
-
-		if($("#studentAddForm").valid())
-		{
-			fetch("students/add", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded"
-				},
-				body: $("#studentAddForm").serialize()				
+	function populateCourses() {
+		fetch("courses/getAll")
+			.then(response => response.json())
+			.then(data => {
+				courses = data.Records;
+				let courseCode = $("#courseCode");
+				for (let k = 0; k < courses.length; k++) {
+					var option = $("<option>").val(courses[k].code).text(courses[k].title);
+					courseCode.append(option);
+				}
 			})
-			.then((response) => {return response.json()})
-			.then((data) => {
-					if(data.success)
-					{
-						$("<p>")
-						.text(data.message)		//doubt: what will exception message come as 
-						.dialog({
-						modal:true,
-						beforeClose:function(){
-						$("#studentAddFormDialog").dialog("close"); 
-						document.getElementById("studentAddForm").reset();
-						$("#studentAddForm").validate().resetForm();
-						},
-						buttons: {
-							OK : function(){
-								$(this).dialog("close");
-								$("#studentAddFormDialog").dialog("close"); 
-								document.getElementById("studentAddForm").reset();
-								$("#studentAddForm").validate().resetForm();
-							}
-						}			
-						});
-						$("#studentsView").jtable("reload");
-					}
-					else
-					{	
-						var validator = $("#studentAddForm").data("validator");
-						validator.showErrors(data.serverErrors);
-					}
-					})
-			.catch((error => {
-				$("#studentAddFormDialog").dialog("close"); 
-				document.getElementById("studentAddForm").reset();
-				alert("Error while adding student: " + error);
-			}))
-			
-		}
-	});
-	
-}
-
-function initEditStudentEventHandler(record)
-{
-	//console.log(record);
-	$("#rollNo").val(record.rollNo);
-	$("#name").val(record.name);
-	$("#courseCode").val(record.course.code);
-	$("#dateOfBirth").val(record.dateOfBirth);
-	if(record.gender=="M") $("#male").prop("checked",true).checkboxradio("refresh");
-	else if(record.gender=="F") $("#female").prop("checked",true).checkboxradio("refresh");
-	if(record.isIndian==true) document.getElementById("isIndian").checked = true;
-	$("#fees").val(record.fees);
-	$("#enrollmentNumber").val(record.enrollmentNumber);
-	$("#aadharCardNumber").val(record.aadharCardNumber);
-	
-
-	$("#studentAddFormDialog").dialog("option", "title", "Student (Edit Module)");
-	$("#addStudentButton").html("<span style='scale:1.5' class=\"ui-icon ui-icon-refresh\"></span>  Update Student");
-	$("#studentAddFormDialog").dialog("open");
-	
-	if($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
-	{
-		$("#addStudentButton").button("destroy");
-		$("#addStudentButton").off("click");
-	}	
-	$("#addStudentButton").button();
-	$("#addStudentButton").click(function(){
-
-		window.serverErrors = null;
-
-		if($("#studentAddForm").valid())
-		{
-			fetch("students/update", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded"
-				},
-				body: $("#studentAddForm").serialize()				
+			.catch(error => {
+				alert("Error while getting all courses: " + error);
 			})
-			.then((response) => {return response.json()})
-			.then((data) => {
-					if(data.success)
+	}
+
+
+
+	function initRadioButtons() {
+		$("#male, #female").checkboxradio();
+	}
+
+	function initDatePicker() {
+		$("#dateOfBirth").datepicker(
+			{
+				dateFormat: "dd-mm-yy",
+			});
+	}
+
+	function initControlGroup() {
+		$("#isIndianGroup").controlgroup();
+	}
+
+	function loadStudentsView() {
+		let serialNumber = 1;
+		$("#studentsView").jtable({
+			title: "List of Students",
+			toolbar: {
+				items: [
 					{
-						$("<p>")
-						.text(data.message)		//doubt: what will exception message come as 
-						.dialog({
-						modal:true,
-						beforeClose:function(){
-						$("#studentAddFormDialog").dialog("close"); 
-						document.getElementById("studentAddForm").reset();
-						$("#studentAddForm").validate().resetForm();
-						},
-						buttons: {
-							OK : function(){
-								$(this).dialog("close");
-								$("#studentAddFormDialog").dialog("close"); 
-								document.getElementById("studentAddForm").reset();
-								$("#studentAddForm").validate().resetForm();
-							}
-						}			
-						});
-						$("#studentsView").jtable("reload");
+						icon: '',
+						text: "<span class='ui-icon ui-icon-document''></span> Export to PDF",
+						click: function () {
+							window.location.href = 'students/pdf';
+						}
 					}
-					else
-					{	
-						var validator = $("#studentAddForm").data("validator");
-						validator.showErrors(data.serverErrors);
+				]
+			},
+			actions: {
+				listAction: function (jtParams) {
+					return $.get("students/getAll", jtParams);	//jtable sends some 'filter' parameters with the get request.
+				},
+				createAction: "students/add",
+				updateAction: "students/update",
+				deleteAction: "students/delete"
+			},
+			fields: {
+				sno: {
+					title: "S.No.",
+					width: "5%",
+					sorting: false,
+					create: false,
+					edit: false,
+					list: true,
+					display: function (data) {
+						let sno = serialNumber;
+						serialNumber++;
+						return (sno + ".");
 					}
-					})
-			.catch((error => {
-				$("#studentAddFormDialog").dialog("close"); 
-				document.getElementById("studentAddForm").reset();
-				alert("Error while updating student: " + error);
-			}))
-			
+				},
+				rollNo: { key: true, title: "Roll No", width: "20%" },
+				name: { title: "Name", width: "35%" },
+				course: { title: "Course", width: "20%", display: function (data) { return data.record.course.title; } }
+			},
+			loadingRecords: function () {
+				serialNumber = 1;
+			},
+			recordsLoaded: function (event, data) {
+
+				$("#studentsView .jtable-data-row").css("cursor", "pointer");
+				$("#studentsView .jtable-data-row").off("click");
+				$("#studentsView .jtable-data-row").on("click", function () {
+					let clickedRow = $(this);
+					showDetailsForStudentRow(clickedRow);
+				});
+
+
+				$(".jtable-toolbar-item-add-record").off("click");
+				$(".jtable-toolbar-item-add-record").on("click", function () {
+					initAddStudentEventHandler();
+				});
+
+				$(".jtable-edit-command-button").off("click");
+				$(".jtable-edit-command-button").on("click", function () {
+					let record = $(this).closest("tr").data("record");
+					initEditStudentEventHandler(record);
+				});
+
+				$(".jtable-delete-command-button").off("click");
+				$(".jtable-delete-command-button").on("click", function () {
+					let record = $(this).closest("tr").data("record");
+					initDeleteStudentEventHandler(record);
+				});
+
+			}
+
+		});
+
+		$("#studentsView").addClass("ui-widget ui-widget-content");
+		$("#studentsView").jtable("load");
+	}
+
+	selectedJTableRow = null;
+	function showDetailsForStudentRow(clickedRow) {
+		if (clickedRow == selectedJTableRow) return;
+
+		if (selectedJTableRow != null) {
+			selectedJTableRow.css("background-color", selectedJTableRow.oldBackgroundColor);
+			selectedJTableRow.css("color", selectedJTableRow.oldColor);
 		}
-	});
-}
+		clickedRow.oldBackgroundColor = clickedRow.css("background-color");
+		clickedRow.oldColor = clickedRow.css("color");
+		clickedRow.css("background-color", "gray");
+		clickedRow.css("color", "white");
 
-function initDeleteStudentEventHandler(record)
-{
-	$("#deleteStudentRollNo").html(record.rollNo);
-	$("#deleteStudentName").html(record.name);
-	$("#deleteStudentCourse").html(record.course.title);
-	$("#deleteStudentDateOfBirth").html(record.dateOfBirth);
-	if(record.gender=="M") $("#deleteStudentGender").html("Male");
-	else if(record.gender=="F") $("#deleteStudentGender").html("Female");
-	if(record.isIndian==true) $("#deleteStudentIsIndian").html("Indian");
-	else $("#deleteStudentIsIndian").html("Not Indian");
-	$("#deleteStudentFees").html(record.fees);
-	$("#deleteStudentEnrollmentNumber").html(record.enrollmentNumber);
-	$("#deleteStudentAadharCardNumber").html(record.aadharCardNumber);
-	
+		selectedJTableRow = clickedRow;
+		//add details
+		let record = clickedRow.data("record");
+		$("#detailPanel_rollNo").html(record.rollNo);
+		$("#detailPanel_name").html(record.name);
+		$("#detailPanel_course").html(record.course.title);
+		$("#detailPanel_dateOfBirth").html(record.dateOfBirth);
+		$("#detailPanel_gender").html(record.gender);
+		$("#detailPanel_isIndian").html((record.isIndian) == true ? "True" : "False");
+		$("#detailPanel_fees").html(record.fees);
+		$("#detailPanel_enrollmentNumber").html(record.enrollmentNumber);
+		$("#detailPanel_aadharCardNumber").html(record.aadharCardNumber);
+	}
 
-	$("#studentAddFormDialog").dialog("option", "title", "Student (Edit Module)");
-	$("#deleteStudentButton").html("<span style='scale:1.0' class=\"ui-icon ui-icon-trash\"></span>  Delete Student");
-	$("#studentDeleteDialog").dialog("open");
-	
-	if($("#deleteStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
-	{
-		$("#deleteStudentButton").button("destroy");
-		$("#deleteStudentButton").off("click");
-	}	
-	$("#deleteStudentButton").button();
-	$("#deleteStudentButton").click(function(){
+	function initAddStudentEventHandler() {
+		$("#studentAddFormDialog").dialog("option", "title", "Student (Add Module)");
+		$("#addStudentButton").html("<span class=\"ui-icon ui-icon-circle-plus\"></span>  Add Student");
+		$("#studentAddFormDialog").dialog("open");
+
+		if ($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
+		{
+			$("#addStudentButton").button("destroy");
+			$("#addStudentButton").off("click");
+		}
+		$("#addStudentButton").button();
+		$("#addStudentButton").click(function () {
+
+			window.serverErrors = null;
+
+			if ($("#studentAddForm").valid()) {
+				fetch("students/add", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: $("#studentAddForm").serialize()
+				})
+					.then((response) => { return response.json() })
+					.then((data) => {
+						if (data.success) {
+							$("<p>")
+								.text(data.message)		//doubt: what will exception message come as 
+								.dialog({
+									modal: true,
+									beforeClose: function () {
+										$("#studentAddFormDialog").dialog("close");
+										document.getElementById("studentAddForm").reset();
+										$("#studentAddForm").validate().resetForm();
+									},
+									buttons: {
+										OK: function () {
+											$(this).dialog("close");
+											$("#studentAddFormDialog").dialog("close");
+											document.getElementById("studentAddForm").reset();
+											$("#studentAddForm").validate().resetForm();
+										}
+									}
+								});
+							$("#studentsView").jtable("reload");
+						}
+						else {
+							var validator = $("#studentAddForm").data("validator");
+							validator.showErrors(data.serverErrors);
+						}
+					})
+					.catch((error => {
+						$("#studentAddFormDialog").dialog("close");
+						document.getElementById("studentAddForm").reset();
+						alert("Error while adding student: " + error);
+					}))
+
+			}
+		});
+
+	}
+
+	function initEditStudentEventHandler(record) {
+		//console.log(record);
+		$("#rollNo").val(record.rollNo);
+		$("#name").val(record.name);
+		$("#courseCode").val(record.course.code);
+		$("#dateOfBirth").val(record.dateOfBirth);
+		if (record.gender == "M") $("#male").prop("checked", true).checkboxradio("refresh");
+		else if (record.gender == "F") $("#female").prop("checked", true).checkboxradio("refresh");
+		if (record.isIndian == true) document.getElementById("isIndian").checked = true;
+		$("#fees").val(record.fees);
+		$("#enrollmentNumber").val(record.enrollmentNumber);
+		$("#aadharCardNumber").val(record.aadharCardNumber);
+
+
+		$("#studentAddFormDialog").dialog("option", "title", "Student (Edit Module)");
+		$("#addStudentButton").html("<span style='scale:1.5' class=\"ui-icon ui-icon-refresh\"></span>  Update Student");
+		$("#studentAddFormDialog").dialog("open");
+
+		if ($("#addStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
+		{
+			$("#addStudentButton").button("destroy");
+			$("#addStudentButton").off("click");
+		}
+		$("#addStudentButton").button();
+		$("#addStudentButton").click(function () {
+
+			window.serverErrors = null;
+
+			if ($("#studentAddForm").valid()) {
+				fetch("students/update", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: $("#studentAddForm").serialize()
+				})
+					.then((response) => { return response.json() })
+					.then((data) => {
+						if (data.success) {
+							$("<p>")
+								.text(data.message)		//doubt: what will exception message come as 
+								.dialog({
+									modal: true,
+									beforeClose: function () {
+										$("#studentAddFormDialog").dialog("close");
+										document.getElementById("studentAddForm").reset();
+										$("#studentAddForm").validate().resetForm();
+									},
+									buttons: {
+										OK: function () {
+											$(this).dialog("close");
+											$("#studentAddFormDialog").dialog("close");
+											document.getElementById("studentAddForm").reset();
+											$("#studentAddForm").validate().resetForm();
+										}
+									}
+								});
+							$("#studentsView").jtable("reload");
+						}
+						else {
+							var validator = $("#studentAddForm").data("validator");
+							validator.showErrors(data.serverErrors);
+						}
+					})
+					.catch((error => {
+						$("#studentAddFormDialog").dialog("close");
+						document.getElementById("studentAddForm").reset();
+						alert("Error while updating student: " + error);
+					}))
+
+			}
+		});
+	}
+
+	function initDeleteStudentEventHandler(record) {
+		$("#deleteStudentRollNo").html(record.rollNo);
+		$("#deleteStudentName").html(record.name);
+		$("#deleteStudentCourse").html(record.course.title);
+		$("#deleteStudentDateOfBirth").html(record.dateOfBirth);
+		if (record.gender == "M") $("#deleteStudentGender").html("Male");
+		else if (record.gender == "F") $("#deleteStudentGender").html("Female");
+		if (record.isIndian == true) $("#deleteStudentIsIndian").html("Indian");
+		else $("#deleteStudentIsIndian").html("Not Indian");
+		$("#deleteStudentFees").html(record.fees);
+		$("#deleteStudentEnrollmentNumber").html(record.enrollmentNumber);
+		$("#deleteStudentAadharCardNumber").html(record.aadharCardNumber);
+
+
+		$("#studentAddFormDialog").dialog("option", "title", "Student (Edit Module)");
+		$("#deleteStudentButton").html("<span style='scale:1.0' class=\"ui-icon ui-icon-trash\"></span>  Delete Student");
+		$("#studentDeleteDialog").dialog("open");
+
+		if ($("#deleteStudentButton").data("ui-button")) // destroy button before reusing to prevent it from accumulating click functions or any other attributes
+		{
+			$("#deleteStudentButton").button("destroy");
+			$("#deleteStudentButton").off("click");
+		}
+		$("#deleteStudentButton").button();
+		$("#deleteStudentButton").click(function () {
 			fetch("students/delete", {
 				method: "POST",
 				headers: {
@@ -393,220 +374,215 @@ function initDeleteStudentEventHandler(record)
 				},
 				body: ("rollNo=" + record.rollNo)
 			})
-			.then((response) => {return response.json()})
-			.then((data) => {
-					if(data.success)
-					{
+				.then((response) => { return response.json() })
+				.then((data) => {
+					if (data.success) {
 						$("<p>")
-						.text(data.message)		//doubt: what will exception message come as 
-						.dialog({
-						modal:true,
-						beforeClose:function(){
-						$("#studentDeleteDialog").dialog("close"); 
-						},
-						buttons: {
-							OK : function(){
-								$(this).dialog("close");
-								$("#studentDeleteDialog").dialog("close"); 
-							}
-						}			
-						});
+							.text(data.message)		//doubt: what will exception message come as 
+							.dialog({
+								modal: true,
+								beforeClose: function () {
+									$("#studentDeleteDialog").dialog("close");
+								},
+								buttons: {
+									OK: function () {
+										$(this).dialog("close");
+										$("#studentDeleteDialog").dialog("close");
+									}
+								}
+							});
 						$("#studentsView").jtable("reload");
 					}
-					else
-					{	
+					else {
 						alert(data.message);
 					}
-					})
-			.catch((error => {
-				$("#studentDeleteDialog").dialog("close"); 
-				alert("Error while deleting student: " + error);
-			}))
-			
-		
+				})
+				.catch((error => {
+					$("#studentDeleteDialog").dialog("close");
+					alert("Error while deleting student: " + error);
+				}))
+
+
+		});
+	}
+
+
+	$(() => {
+		initStudentAddFormDialog();
+		initValidateAddForm();
+		populateCourses();
+		initRadioButtons();
+		initDatePicker();
+		loadStudentsView();
+
 	});
-}
-
-
-$(()=>{
-initStudentAddFormDialog();
-initValidateAddForm();
-populateCourses();
-initRadioButtons();
-initDatePicker();
-loadStudentsView();
-
-});
 
 </script>
 <h2>Students</h2>
 <div id="studentsViewContainer" style="height: 60%; overflow-y: auto; border: 3px groove black">
-<div id="studentsView">
+	<div id="studentsView">
+	</div>
 </div>
-</div>
-<div id="studentDetailsContainer" 
-style="height: 40%; overflow-y: auto; border: 3px groove black">
+<div id="studentDetailsContainer" style="height: 40%; overflow-y: auto; border: 3px groove black">
 	<label style='background:gray;color:white;padding-left:5px;padding-right:5px;'>Details</label><br><br>
-		<table border='1' style='width:99%;' class="ui-widget-content ui-corner-all">
-			<tr class="ui-state-default">
+	<table border='1' style='width:99%;' class="ui-widget-content ui-corner-all">
+		<tr class="ui-state-default">
 			<td style='width:33%' class="ui-widget-content">Roll no: <span id='detailPanel_rollNo'></span></td>
 			<td style='width:33%' class="ui-widget-content">Name: <span id='detailPanel_name'></span></td>
 			<td style='width:33%' class="ui-widget-content">Course: <span id='detailPanel_course'></span></td>
-			</tr>
-			<tr class="ui-state-default">
+		</tr>
+		<tr class="ui-state-default">
 			<td class="ui-widget-content">Date of Birth: <span id='detailPanel_dateOfBirth'></span></td>
 			<td class="ui-widget-content">Gender: <span id='detailPanel_gender'></span></td>
 			<td class="ui-widget-content">Is Indian: <span id='detailPanel_isIndian'></span></td>
-			</tr>
-			<tr class="ui-state-default">
+		</tr>
+		<tr class="ui-state-default">
 			<td class="ui-widget-content">Fees: <span id='detailPanel_fees'></span></td>
 			<td class="ui-widget-content">Enrollment Number: <span id='detailPanel_enrollmentNumber'></span></td>
 			<td class="ui-widget-content">Aadhar Card Number: <span id='detailPanel_aadharCardNumber'></span></td>
-			</tr>
-		</table>
+		</tr>
+	</table>
 </div>
 
 <div id='studentAddFormDialog' title='Student (Add Module)'>
-<form id='studentAddForm'>
-<input type="hidden" id="rollNo" name="rollNo">
-<table id='studentAddFormTable'>
-<tr>
-<td>Name</td>
-<td>
-<input type='text' id='name' name='name' maxlength='35' size='36' value=''>
-<span id='nameErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Course</td>
-<td>
-<select id='courseCode' name='courseCode'>
-<option value='' disabled selected>&lt;Select Course&gt;</option>
-</select>
-<span id='courseCodeErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Date of birth</td>
-<td>
-<input type='text' id='dateOfBirth' name='dateOfBirth' value='01-01-2000'>	
-<span id='dateOfBirthErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Gender</td>
-<td>
-<input type='radio' id='male' name='gender' value='M'>
-<label for='male'>Male</label>
-<input type='radio' id='female' name='gender' value='F'>
-<label for='female'>Female</label>
-<span id='genderErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Indian?</td>
-<td>
-<input type='checkbox' id='isIndian' name='isIndian' value='Y'>
-</td>
-<td>
-<span id='isIndianErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Fees</td>
-<td>
-<input type='text' id='fees' name='fees' maxlength='11' size='13' value='' style='text-align:right'>
-<span id='feesErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Enrollment Number</td>
-<td>
-<input type='text' id='enrollmentNumber' name='enrollmentNumber' maxlength='15' size='16' value=''>
-<span id='enrollmentNumberErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td>Aadhar Card Number</td>
-<td>
-<input type='text' id='aadharCardNumber' name='aadharCardNumber' maxlength='15' size='16' value=''>
-<span id='aadharCardNumberErrorSection'></span>
-</td>
-</tr>
-</table>
-<span id='errorSection'></span>
-<br><br>
-<table>
-<tr>
-<td>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td>
-<td>
-<button type='button' id='addStudentButton'></button>
-</form>
+	<form id='studentAddForm'>
+		<input type="hidden" id="rollNo" name="rollNo">
+		<table id='studentAddFormTable'>
+			<tr>
+				<td>Name</td>
+				<td>
+					<input type='text' id='name' name='name' maxlength='35' size='36' value=''>
+					<span id='nameErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Course</td>
+				<td>
+					<select id='courseCode' name='courseCode'>
+						<option value='' disabled selected>&lt;Select Course&gt;</option>
+					</select>
+					<span id='courseCodeErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Date of birth</td>
+				<td>
+					<input type='text' id='dateOfBirth' name='dateOfBirth' value='01-01-2000'>
+					<span id='dateOfBirthErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Gender</td>
+				<td>
+					<input type='radio' id='male' name='gender' value='M'>
+					<label for='male'>Male</label>
+					<input type='radio' id='female' name='gender' value='F'>
+					<label for='female'>Female</label>
+					<span id='genderErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Indian?</td>
+				<td>
+					<input type='checkbox' id='isIndian' name='isIndian' value='Y'>
+				</td>
+				<td>
+					<span id='isIndianErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Fees</td>
+				<td>
+					<input type='text' id='fees' name='fees' maxlength='11' size='13' value='' style='text-align:right'>
+					<span id='feesErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Enrollment Number</td>
+				<td>
+					<input type='text' id='enrollmentNumber' name='enrollmentNumber' maxlength='15' size='16' value=''>
+					<span id='enrollmentNumberErrorSection'></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>Aadhar Card Number</td>
+				<td>
+					<input type='text' id='aadharCardNumber' name='aadharCardNumber' maxlength='15' size='16' value=''>
+					<span id='aadharCardNumberErrorSection'></span>
+				</td>
+			</tr>
+		</table>
+		<span id='errorSection'></span>
+		<br><br>
+		<table>
+			<tr>
+				<td>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+				<td>
+					<button type='button' id='addStudentButton'></button>
+	</form>
 </div>
 
 <div id='studentDeleteDialog' title='Student (Delete Module)'>
-<table id='studentDeleteTable'>
-<tr>
-<td><b>Roll No: </b></td>
-<td id="deleteStudentRollNo">
-</td>
-</tr>
-<tr>
-<td><b>Name: </b></td>
-<td id="deleteStudentName">
-</td>
-</tr>
-<tr>
-<td><b>Course: </b></td>
-<td id="deleteStudentCourse">
-</td>
-</tr>
-<tr>
-<td><b>Date of birth: </b></td>
-<td id="deleteStudentDateOfBirth">
-</td>
-</tr>
-<tr>
-<td><b>Gender: </b></td>
-<td id="deleteStudentGender">
-</td>
-</tr>
-<tr>
-<td><b>Indian: </b></td>
-<td id="deleteStudentIsIndian">
-</td>
-<td>
-<span id='isIndianErrorSection'></span><br>
-</td>
-</tr>
-<tr>
-<td><b>Fees: </b></td>
-<td id="deleteStudentFees">
-</td>
-</tr>
-<tr>
-<td><b>Enrollment Number: </b></td>
-<td id="deleteStudentEnrollmentNumber">
-</td>
-</tr>
-<tr>
-<td><b>Aadhar Card Number: </b></td>
-<td id="deleteStudentAadharCardNumber">
-</td>
-</tr>
-</table>
-<span id='errorSection'></span>
-<br><br>
-<table>
-<tr>
-<td>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td>
-<td>
-<button type='button' id='deleteStudentButton'></button>
-</form>
+	<table id='studentDeleteTable'>
+		<tr>
+			<td><b>Roll No: </b></td>
+			<td id="deleteStudentRollNo">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Name: </b></td>
+			<td id="deleteStudentName">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Course: </b></td>
+			<td id="deleteStudentCourse">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Date of birth: </b></td>
+			<td id="deleteStudentDateOfBirth">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Gender: </b></td>
+			<td id="deleteStudentGender">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Indian: </b></td>
+			<td id="deleteStudentIsIndian">
+			</td>
+			<td>
+				<span id='isIndianErrorSection'></span><br>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Fees: </b></td>
+			<td id="deleteStudentFees">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Enrollment Number: </b></td>
+			<td id="deleteStudentEnrollmentNumber">
+			</td>
+		</tr>
+		<tr>
+			<td><b>Aadhar Card Number: </b></td>
+			<td id="deleteStudentAadharCardNumber">
+			</td>
+		</tr>
+	</table>
+	<span id='errorSection'></span>
+	<br><br>
+	<table>
+		<tr>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+			<td>
+				<button type='button' id='deleteStudentButton'></button>
+				</form>
 </div>
-
-

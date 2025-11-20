@@ -290,6 +290,7 @@
 	}
 
 	function initEditStudentEventHandler(record) {
+		var studentRollNo = record.rollNo;
 		//console.log(record);
 		$("#rollNo").val(record.rollNo);
 		$("#name").val(record.name);
@@ -347,6 +348,14 @@
 									}
 								});
 							$("#studentsView").jtable("reload");
+							setTimeout(function(){
+								alert('after edit');
+									let clickedRow = $("#studentsView").find("tr[data-record-key='"+studentRollNo+"']");
+									let domRow = clickedRow[0];
+									domRow.scrollIntoView({behavior:"smooth", block:"center"}); //scrollIntoView is a regular DOM method
+									// .css() in showDetailsForStudentRow() is jQuery method 
+									showDetailsForStudentRow(clickedRow);
+							},300);
 						}
 						else {
 							var validator = $("#studentAddForm").data("validator");

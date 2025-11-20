@@ -184,8 +184,7 @@
 					initDeleteStudentEventHandler(record);
 				});
 
-			}
-
+			},
 		});
 
 		$("#studentsView").addClass("ui-widget ui-widget-content");
@@ -262,8 +261,17 @@
 											$("#studentAddForm").validate().resetForm();
 										}
 									}
-								});
+								});							
 							$("#studentsView").jtable("reload");
+							setTimeout(function(){
+									let rows = $("#studentsView").find(".jtable-data-row");
+									let last = rows.last();
+									let lastRow = last[0];
+									lastRow.scrollIntoView({behavior:"smooth", block:"end"}); //scrollIntoView is a regular DOM method
+									// .css() in showDetailsForStudentRow() is jQuery method
+									let clickedRow = $(lastRow); 
+									showDetailsForStudentRow(clickedRow);
+							},300);
 						}
 						else {
 							var validator = $("#studentAddForm").data("validator");

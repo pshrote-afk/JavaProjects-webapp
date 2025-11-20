@@ -100,6 +100,19 @@
 		$("#isIndianGroup").controlgroup();
 	}
 
+	function emptyStudentDetailPanel()
+	{
+		$("#detailPanel_rollNo").html("");
+		$("#detailPanel_name").html("");
+		$("#detailPanel_course").html("");
+		$("#detailPanel_dateOfBirth").html("");
+		$("#detailPanel_gender").html("");
+		$("#detailPanel_isIndian").html("");
+		$("#detailPanel_fees").html("");
+		$("#detailPanel_enrollmentNumber").html("");
+		$("#detailPanel_aadharCardNumber").html("");
+	}
+
 	function loadStudentsView() {
 		let serialNumber = 1;
 		$("#studentsView").jtable({
@@ -377,6 +390,7 @@
 				.then((response) => { return response.json() })
 				.then((data) => {
 					if (data.success) {
+						emptyStudentDetailPanel();
 						$("<p>")
 							.text(data.message)		//doubt: what will exception message come as 
 							.dialog({
@@ -391,6 +405,7 @@
 									}
 								}
 							});
+						
 						$("#studentsView").jtable("reload");
 					}
 					else {

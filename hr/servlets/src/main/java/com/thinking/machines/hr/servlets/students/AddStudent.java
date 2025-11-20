@@ -27,7 +27,7 @@ public class AddStudent extends HttpServlet {
     response.setContentType("application/json");
     PrintWriter pw = null;
     Gson gson = new Gson();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     try {
       pw = response.getWriter();
 

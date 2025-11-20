@@ -52,7 +52,7 @@ public class UpdateStudent extends HttpServlet {
 
       CourseInterface course = courseManager.getCourseByCode(courseCode);
       student.setCourse(course);
-
+	
       student.setDateOfBirth(dateOfBirth);
       student.setGender(gender.equalsIgnoreCase("M") ? GENDER.MALE : GENDER.FEMALE);
       student.setIsIndian(isIndian.equalsIgnoreCase("Y") ? true : false);

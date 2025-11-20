@@ -349,7 +349,6 @@
 								});
 							$("#studentsView").jtable("reload");
 							setTimeout(function(){
-								alert('after edit');
 									let clickedRow = $("#studentsView").find("tr[data-record-key='"+studentRollNo+"']");
 									let domRow = clickedRow[0];
 									domRow.scrollIntoView({behavior:"smooth", block:"center"}); //scrollIntoView is a regular DOM method

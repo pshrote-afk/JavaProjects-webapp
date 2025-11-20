@@ -6,6 +6,7 @@ hr/dbdl/.gradle
 hr/dbdl/bin/
 hr/dbdl/build/
 hr/dbdl/testcases/*.class
+hr/dbdl/database-creation.txt
 #Business Layer
 hr/bl/.gradle
 hr/bl/bin/

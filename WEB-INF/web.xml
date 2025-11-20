@@ -122,5 +122,15 @@
 </servlet-mapping>
 
 
+<servlet>
+    <servlet-name>DBTestServlet</servlet-name>
+    <servlet-class>com.thinking.machines.hr.servlets.DBTestServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DBTestServlet</servlet-name>
+    <url-pattern>/dbtest</url-pattern>
+</servlet-mapping>
+
+
 
 </web-app>

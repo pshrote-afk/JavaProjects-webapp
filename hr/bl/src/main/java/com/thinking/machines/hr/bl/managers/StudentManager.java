@@ -377,10 +377,10 @@ public class StudentManager implements StudentManagerInterface {
       blStudent.setRollNo(studentDTO.getRollNo());
       blStudent.setName(name);
 
-      // adding original because it's going to stay within our internal DS only
-      CourseInterface originalCourse;
-      originalCourse = ((CourseManager) courseManager).getDSCourseByCode(oldCourse.getCode());
-      blStudent.setCourse(originalCourse);
+      // adding new Course object
+      CourseInterface newCourse;
+      newCourse = ((CourseManager) courseManager).getDSCourseByCode(courseCode);
+      blStudent.setCourse(newCourse);
 
       blStudent.setDateOfBirth((Date) dateOfBirth.clone());
       blStudent.setGender(

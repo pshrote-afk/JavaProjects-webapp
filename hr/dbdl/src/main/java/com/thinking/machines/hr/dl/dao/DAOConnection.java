@@ -13,17 +13,33 @@ public class DAOConnection {
       Class.forName("com.mysql.cj.jdbc.Driver");
       //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "hr", "hr");
 
-      String host = System.getenv("MYSQLHOST");
-      String port = System.getenv("MYSQLPORT");
-      String db = System.getenv("MYSQLDATABASE");
-      String user = System.getenv("MYSQLUSER");
-      String pass = System.getenv("MYSQLPASSWORD");
+      //for generic credentials
+      //String host = System.getenv("MYSQLHOST");
+      //String port = System.getenv("MYSQLPORT");
+      //String db = System.getenv("MYSQLDATABASE");
+      //String user = System.getenv("MYSQLUSER");
+      //String pass = System.getenv("MYSQLPASSWORD");
+
+      //hard coded db credentials
+      String host = "mysql.railway.internal";
+      String port = "3306";
+      String db = "railway";
+      String user = "root";
+      String pass = "gwbotLJnoXGSXcoBfxifCchsGzgROGiL";
 
       String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + db;
+
+	//System.out.println("host:"+host);
+	//System.out.println("port:"+port);
+	//System.out.println("db:"+db);
+	//System.out.println("user:"+user);
+	//System.out.println("pass:"+pass);
+	System.out.println("jdbcUrl: "+jdbcUrl);
 
       connection = DriverManager.getConnection(jdbcUrl,user,pass);
       return connection;
     } catch (Exception exception) {
+	System.out.println("Exception in DAOConnection.java: "+exception.getMessage());
       throw new DAOException(exception.getMessage());
     }
   }

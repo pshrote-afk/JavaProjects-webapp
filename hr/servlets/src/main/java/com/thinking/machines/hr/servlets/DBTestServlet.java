@@ -1,4 +1,4 @@
-package com.thinking.machines.hr.servlets.courses;
+package com.thinking.machines.hr.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;

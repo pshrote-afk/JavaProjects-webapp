@@ -55,10 +55,26 @@
 			recordAdded: function (event, data) {
 				// no manual reload needed as data is added to the end.
 				// might need manual reload if we add sort alphabetically.
+				setTimeout(function(){
+									let rows = $("#coursesView").find(".jtable-data-row");
+									let last = rows.last();
+									let lastRow = last[0];
+									lastRow.scrollIntoView({behavior:"smooth", block:"end"}); //scrollIntoView is a regular DOM method
+									// .css() in showDetailsForStudentRow() is jQuery method
+									let clickedRow = $(lastRow); 
+									selectCourseRow(clickedRow);
+							},2000);
 			},
 			recordUpdated: function (event, data) {
 				//manual reload needed to reset serialNumber to 1.
 				$("#coursesView").jtable("reload");
+				setTimeout(function(){
+									let clickedRow = $("#coursesView").find("tr[data-record-key='"+data.record.code+"']");
+									let domRow = clickedRow[0];
+									domRow.scrollIntoView({behavior:"smooth", block:"center"}); //scrollIntoView is a regular DOM method
+									// .css() in showDetailsForStudentRow() is jQuery method 
+									selectCourseRow(clickedRow);
+							},2000);
 			},
 			recordDeleted: function (event, data) {
 				//manual reload needed to reset serialNumber to 1.

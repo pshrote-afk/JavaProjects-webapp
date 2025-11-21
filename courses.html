@@ -79,6 +79,16 @@
 			recordDeleted: function (event, data) {
 				//manual reload needed to reset serialNumber to 1.
 				$("#coursesView").jtable("reload");
+				$("<p>")
+						.text("Course " + data.record.title + " deleted successfully!")
+							.dialog({
+								modal: true,
+								buttons: {
+									OK: function () {
+										$(this).dialog("close");
+									}
+								}
+							});	
 			},
 		});
 

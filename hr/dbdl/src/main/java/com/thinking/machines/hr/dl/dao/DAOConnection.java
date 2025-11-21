@@ -10,8 +10,10 @@ public class DAOConnection {
   public static Connection getConnection() throws DAOException {
     Connection connection = null;
     try {
+	System.out.println("Before loading com.mysql.cj.jdbc.Driver");
       Class.forName("com.mysql.cj.jdbc.Driver");
       //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "hr", "hr");
+	System.out.println("After loading com.mysql.cj.jdbc.Driver");
 
       //for generic credentials
       //String host = System.getenv("MYSQLHOST");
@@ -39,6 +41,7 @@ public class DAOConnection {
       connection = DriverManager.getConnection(jdbcUrl,user,pass);
       return connection;
     } catch (Exception exception) {
+	exception.printStackTrace();
 	System.out.println("Exception in DAOConnection.java: "+exception.getMessage());
       throw new DAOException(exception.getMessage());
     }

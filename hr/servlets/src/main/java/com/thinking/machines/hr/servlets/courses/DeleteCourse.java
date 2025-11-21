@@ -45,7 +45,7 @@ public class DeleteCourse extends HttpServlet {
       {
 
         blExceptionMessage = blException.getException("title");
-        if (blExceptionMessage.equals("")) // means it is not an exception related to title.
+        if (blExceptionMessage==null) // means it is not an exception related to title.
         {
           blExceptionMessage = blException.getException("code");
         }

@@ -170,6 +170,13 @@ public class CourseManager implements CourseManagerInterface {
       throw blException;
     }
     CourseInterface tmpCourse = codeWiseCoursesMap.get(code);
+    StudentManagerInterface studentManager = StudentManager.getStudentManager();
+    boolean isCourseAllotted = studentManager.isCourseAllotted(code);
+    if(isCourseAllotted==true)
+	{
+		blException.addException("code","Cannot delete Course " + tmpCourse.getTitle() + " as it is allotted to a Student!");
+		throw blException;
+	}    
     try {
       new CourseDAO().delete(code);
       // control reaches here means successfully deleted

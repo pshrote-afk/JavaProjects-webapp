@@ -38,9 +38,13 @@
                 document.getElementById("contentRightPanel").innerHTML = "";
                 document.getElementById("contentRightPanel").appendChild(homeContent);
 		
-		testHeader = document.createElement("h6");
-		testHeader.innerHTML = "Testing automatic deployment (when PR is merged)"
-		document.getElementById("contentRightPanel").appendChild(testHeader);
+		testHeader1 = document.createElement("h6");
+		testHeader1.innerHTML = "#Test 1. Testing automatic deployment (when PR is merged)"
+		document.getElementById("contentRightPanel").appendChild(testHeader1);
+
+		testHeader2 = document.createElement("h6");
+		testHeader2.innerHTML = "#Test 2. Testing automatic deployment (when PR is merged)"
+		document.getElementById("contentRightPanel").appendChild(testHeader2);
 	
                 globalContentRightPanel = "home";
                 reloadPanelButtons();

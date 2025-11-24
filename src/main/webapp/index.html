@@ -37,7 +37,11 @@
                 homeContent.innerHTML = "Welcome to Student/Course";
                 document.getElementById("contentRightPanel").innerHTML = "";
                 document.getElementById("contentRightPanel").appendChild(homeContent);
-
+		
+		testHeader = document.createElement("h6");
+		testHeader.innerHTML = "Testing automatic deployment (when PR is merged)"
+		document.getElementById("contentRightPanel").appendChild(testHeader);
+	
                 globalContentRightPanel = "home";
                 reloadPanelButtons();
             });
@@ -87,7 +91,7 @@
             <div class='content-right-panel' id='contentRightPanel'><!-- right panel starts here -->
 
 		
-		<h6>Testing automatic deployment (when PR is merged)</h6>
+		
 
 
             </div><!-- right panel ends here -->

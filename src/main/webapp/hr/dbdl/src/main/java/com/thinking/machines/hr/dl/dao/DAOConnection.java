@@ -11,9 +11,9 @@ public class DAOConnection {
     Connection connection = null;
     try {
 	System.out.println("Before loading com.mysql.cj.jdbc.Driver");
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "hr", "hr");
-	System.out.println("After loading com.mysql.cj.jdbc.Driver");
+  Class.forName("com.mysql.cj.jdbc.Driver");
+System.out.println("After loading com.mysql.cj.jdbc.Driver");
+  //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "hr", "hr");
 
       //for generic credentials
       //String host = System.getenv("MYSQLHOST");

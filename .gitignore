@@ -1,21 +1,24 @@
+.gradle/
+bin/
+build/
 #Common
-hr/common/classes/*
-!hr/common/classes/.gitkeep
+src/main/webapp/hr/common/classes/*
+!src/main/webapp/hr/common/classes/.gitkeep
 #SQL Data Layer
-hr/dbdl/.gradle
-hr/dbdl/bin/
-hr/dbdl/build/
-hr/dbdl/testcases/*.class
-hr/dbdl/database-creation.txt
+src/main/webapp/hr/dbdl/.gradle
+src/main/webapp/hr/dbdl/bin/
+src/main/webapp/hr/dbdl/build/
+src/main/webapp/hr/dbdl/testcases/*.class
+src/main/webapp/hr/dbdl/database-creation.txt
 #Business Layer
-hr/bl/.gradle
-hr/bl/bin/
-hr/bl/build/
-hr/bl/testcases/*.class
+src/main/webapp/hr/bl/.gradle
+src/main/webapp/hr/bl/bin/
+src/main/webapp/hr/bl/build/
+src/main/webapp/hr/bl/testcases/*.class
 #servlets
-hr/servlets/.gradle
-hr/servlets/bin/
-hr/servlets/build/
+src/main/webapp/hr/servlets/.gradle
+src/main/webapp/hr/servlets/bin/
+src/main/webapp/hr/servlets/build/
 
 
 

@@ -12,7 +12,7 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-11/v11.0.6/bin/apache-tom
     && mv /opt/apache-tomcat-11.0.6 /opt/tomcat
 
 #2: copy .war into container's tomcat's webapps folder
-COPY .build/libs/JavaProjects-webapp.war /opt/tomcat/webapps/
+COPY ./build/libs/JavaProjects-webapp.war /opt/tomcat/webapps/
 
 #3: expose port 8080 for the the container to communicate
 EXPOSE 8080

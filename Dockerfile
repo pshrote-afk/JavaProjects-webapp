@@ -1,3 +1,11 @@
+#0: Build stage - compile the .war file with gradle
+#Using gradle:8-jdk23 is cleaner because Gradle is already installed.
+#The build stage is thrown away after building. Only the runtime stage (your Temurin + Tomcat) remains in the final image.
+FROM gradle:8-jdk23 AS build
+WORKDIR /app
+COPY . .
+RUN gradle war --no-daemon
+
 #1: Using official Tomcat image with Java
 #FROM tomcat:9-jdk17 - we want to do this, but we want tomcat:11-jdk23, which are not available as official Docker images yet. So we use the following two workarounds to build our own base images.
 
@@ -12,7 +20,7 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-11/v11.0.6/bin/apache-tom
     && mv /opt/apache-tomcat-11.0.6 /opt/tomcat
 
 #2: copy .war into container's tomcat's webapps folder
-COPY ./build/libs/*.war /opt/tomcat/webapps/
+COPY --from=build /app/build/libs/*.war /opt/tomcat/webapps/
 
 #3: expose port 8080 for the the container to communicate
 EXPOSE 8080

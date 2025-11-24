@@ -1,5 +1,5 @@
 #1: Using official Tomcat image with Java
-#FROM tomcat:9-jdk17
+#FROM tomcat:9-jdk17 - we want to do this, but we want tomcat:11-jdk23, which are not available as official Docker images yet. So we use the following two workarounds to build our own base images.
 
 FROM eclipse-temurin:23-jdk
 
@@ -12,7 +12,7 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-11/v11.0.6/bin/apache-tom
     && mv /opt/apache-tomcat-11.0.6 /opt/tomcat
 
 #2: copy .war into container's tomcat's webapps folder
-COPY JavaProjects-webapp.war /opt/tomcat/webapps/
+COPY .build/libs/JavaProjects-webapp.war /opt/tomcat/webapps/
 
 #3: expose port 8080 for the the container to communicate
 EXPOSE 8080

@@ -5,16 +5,4 @@ id 'war'
 
 war {
 	archiveFileName = 'JavaProjects-webapp.war'
-
-	from('.')
-	{
-	//exclude
-	exclude '**/.git/**'
-	exclude '**/.gitattributes/**'
-	exclude '**/.gitignore/**'
-	exclude '**/test-export-pdf-feature/**'
-	exclude '**/build/**'
-	exclude '**/bin/**'
-	exclude './Dockerfile'
-	}
 }

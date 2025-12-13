@@ -1,4 +1,4 @@
-name: Deploy to Railway
+name: Deploy to Elastic Beanstalk
 
 on:
   pull_request:
@@ -13,12 +13,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Railway CLI
-        run: npm i -g @railway/cli
+      - name: Zip source
+        run: |
+          zip -r app.zip . -x "*.git*"
 
-      - name: Trigger Railway Deployment
-        env:
-          RAILWAY_TOKEN: ${{secrets.RAILWAY_TOKEN}}
-        run: railway up --service=javaprojects-webapp
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: JavaProjects-webapp
+          environment_name: JavaProjects-webapp-env-v2
+          region: eu-north-1
+          version_label: github-${{ github.sha }}
+          deployment_package: app.zip

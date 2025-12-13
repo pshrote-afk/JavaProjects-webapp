@@ -22,20 +22,29 @@ System.out.println("After loading com.mysql.cj.jdbc.Driver");
       //String user = System.getenv("MYSQLUSER");
       //String pass = System.getenv("MYSQLPASSWORD");
 
-      //hard coded db credentials
-      String host = "mysql.railway.internal";
+      //hard coded db credentials of aws
+      String host = "database-1.cfuo4saq0jit.eu-north-1.rds.amazonaws.com";
       String port = "3306";
-      String db = "railway";
-      String user = "root";
-      String pass = "gwbotLJnoXGSXcoBfxifCchsGzgROGiL";
+      String db = "database-1";
+      String user = "admin";
+      String pass = "tmdbuser";
+       
+
+
+      //hard coded db credentials of railway.com
+      //String host = "mysql.railway.internal";
+      //String port = "3306";
+      //String db = "railway";
+      //String user = "root";
+      //String pass = "gwbotLJnoXGSXcoBfxifCchsGzgROGiL";
 
       String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + db;
 
-	//System.out.println("host:"+host);
-	//System.out.println("port:"+port);
-	//System.out.println("db:"+db);
-	//System.out.println("user:"+user);
-	//System.out.println("pass:"+pass);
+	System.out.println("host:"+host);
+	System.out.println("port:"+port);
+	System.out.println("db:"+db);
+	System.out.println("user:"+user);
+	System.out.println("pass:"+pass);
 	System.out.println("jdbcUrl: "+jdbcUrl);
 
       connection = DriverManager.getConnection(jdbcUrl,user,pass);

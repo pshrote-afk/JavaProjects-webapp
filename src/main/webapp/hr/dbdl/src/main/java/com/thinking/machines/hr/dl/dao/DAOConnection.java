@@ -16,18 +16,18 @@ System.out.println("After loading com.mysql.cj.jdbc.Driver");
   //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrdb", "hr", "hr");
 
       //for generic credentials
-      //String host = System.getenv("MYSQLHOST");
-      //String port = System.getenv("MYSQLPORT");
-      //String db = System.getenv("MYSQLDATABASE");
-      //String user = System.getenv("MYSQLUSER");
-      //String pass = System.getenv("MYSQLPASSWORD");
+      String host = System.getenv("MYSQLHOST");
+      String port = System.getenv("MYSQLPORT");
+      String db = System.getenv("MYSQLDATABASE");
+      String user = System.getenv("MYSQLUSER");
+      String pass = System.getenv("MYSQLPASSWORD");
 
       //hard coded db credentials of aws
-      String host = "database-1.cfuo4saq0jit.eu-north-1.rds.amazonaws.com";
-      String port = "3306";
-      String db = "database-1";
-      String user = "admin";
-      String pass = "tmdbuser";
+      //String host = "***";
+      //String port = "3306";
+      //String db = "database-1";
+      //String user = "***";
+      //String pass = "***";
        
 
 

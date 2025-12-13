@@ -1,4 +1,4 @@
-name: Deploy to Elastic Beanstalk
+name: Deploy WAR to Elastic Beanstalk
 
 on:
   pull_request:
@@ -15,9 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Zip source
-        run: |
-          zip -r app.zip . -x "*.git*"
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
+
+      - name: Build WAR
+        run: ./gradlew clean build
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -26,6 +31,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: JavaProjects-webapp
           environment_name: JavaProjects-webapp-env-v2
-          region: eu-north-1
-          version_label: github-${{ github.sha }}
-          deployment_package: app.zip
+          region: ${{ secrets.AWS_REGION }}
+          version_label: war-${{ github.sha }}
+          deployment_package: build/libs/JavaProjects-webapp.war

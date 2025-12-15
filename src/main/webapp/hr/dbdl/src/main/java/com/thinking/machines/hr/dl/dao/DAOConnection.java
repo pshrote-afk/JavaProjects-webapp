@@ -30,7 +30,6 @@ System.out.println("After loading com.mysql.cj.jdbc.Driver");
       //String pass = "***";
        
 
-
       //hard coded db credentials of railway.com
       //String host = "mysql.railway.internal";
       //String port = "3306";
@@ -38,7 +37,7 @@ System.out.println("After loading com.mysql.cj.jdbc.Driver");
       //String user = "root";
       //String pass = "gwbotLJnoXGSXcoBfxifCchsGzgROGiL";
 
-      String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + db;
+        String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + db;
 
 	System.out.println("host:"+host);
 	System.out.println("port:"+port);

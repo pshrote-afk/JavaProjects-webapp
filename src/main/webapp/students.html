@@ -72,9 +72,13 @@
 			.then(response => response.json())
 			.then(data => {
 				courses = data.Records;
+				let option;
 				let courseCode = $("#courseCode");
+				courseCode.empty();		// to fix bug of stacking of options every time students.html is loaded
+				option = $("<option>").text("<Select Course>").val("").prop("disabled", true).prop("selected", true);
+				courseCode.append(option);
 				for (let k = 0; k < courses.length; k++) {
-					var option = $("<option>").val(courses[k].code).text(courses[k].title);
+					option = $("<option>").val(courses[k].code).text(courses[k].title);
 					courseCode.append(option);
 				}
 			})
@@ -490,7 +494,6 @@
 				<td>Course</td>
 				<td>
 					<select id='courseCode' name='courseCode'>
-						<option value='' disabled selected>&lt;Select Course&gt;</option>
 					</select>
 					<span id='courseCodeErrorSection'></span><br>
 				</td>

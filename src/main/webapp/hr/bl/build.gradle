@@ -1,7 +1,9 @@
 apply plugin: 'java'
 dependencies {
-implementation files('../../WEB-INF/lib/dbdl.jar')
 implementation files('../../WEB-INF/lib/hr-common.jar') //data about enums
+implementation files('../../WEB-INF/lib/dbdl.jar')
+implementation project(':common')			// build of this sub-project should be complete
+implementation project(':dbdl')				// build of this sub-project should be complete
 }
 
 jar {

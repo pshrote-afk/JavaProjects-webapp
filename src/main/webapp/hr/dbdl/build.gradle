@@ -1,6 +1,7 @@
 apply plugin: 'java'
 dependencies {
 implementation files('../../WEB-INF/lib/hr-common.jar')
+implementation project(':common')
 }
 
 jar {

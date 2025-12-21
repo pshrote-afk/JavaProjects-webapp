@@ -1,6 +1,7 @@
 .gradle/
 bin/
 build/
+src/main/webapp/WEB-INF/lib/*.jar
 #Common
 src/main/webapp/hr/common/classes/*
 !src/main/webapp/hr/common/classes/.gitkeep

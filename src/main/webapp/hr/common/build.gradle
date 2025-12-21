@@ -1,0 +1,6 @@
+apply plugin: 'java'
+
+jar {
+archiveFileName = 'hr-common.jar'
+destinationDirectory = file('../../WEB-INF/lib')
+}

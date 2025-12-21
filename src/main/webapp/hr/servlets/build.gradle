@@ -1,10 +1,25 @@
 apply plugin: 'java'
+
+repositories {
+mavenCentral()  	// This tells Gradle where to download from. mavenCentral() = https://repo1.maven.org/maven2/
+}
+
 dependencies {
-implementation files('../../WEB-INF/lib/bl.jar')
-implementation files('../../WEB-INF/lib/dbdl.jar')
+// Servlet API from Maven Central
+compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+
+// Local JAR files
 implementation files('../../WEB-INF/lib/hr-common.jar') //data about enums
-implementation fileTree(dir: '../../../../lib', include: ['*.jar'])
-implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])
+implementation files('../../WEB-INF/lib/dbdl.jar')
+implementation files('../../WEB-INF/lib/bl.jar')
+
+
+// Runtime libraries (gson, mysql, itext)
+implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])			// Requires gson.jar, mysql-connector.jar, itext7.jar to compile.
+
+implementation project(':common')			// build of this sub-project should be complete
+implementation project(':dbdl')				// build of this sub-project should be complete
+implementation project(':bl')				// build of this sub-project should be complete
 }
 
 jar {

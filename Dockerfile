@@ -1,10 +1,12 @@
 #0: Build stage - compile the .war file with gradle
 #Using gradle:8-jdk23 is cleaner because Gradle is already installed.
 #The build stage is thrown away after building. Only the runtime stage (your Temurin + Tomcat) remains in the final image.
-FROM gradle:8-jdk23 AS build
+FROM eclipse-temurin:23-jdk AS build
 WORKDIR /app
 COPY . .
-RUN gradle war --no-daemon
+# gradlew must be executable
+RUN chmod +x gradlew
+RUN ./gradlew clean build --no-daemon
 
 #1: Using official Tomcat image with Java
 #FROM tomcat:9-jdk17 - we want to do this, but we want tomcat:11-jdk23, which are not available as official Docker images yet. So we use the following two workarounds to build our own base images.

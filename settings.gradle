@@ -1,0 +1,7 @@
+rootProject.name = 'JavaProjects-webapp'
+include 'common', 'dbdl', 'bl', 'servlets'
+
+project(':common').projectDir = file('./src/main/webapp/hr/common')
+project(':dbdl').projectDir = file('./src/main/webapp/hr/dbdl')
+project(':bl').projectDir = file('./src/main/webapp/hr/bl')
+project(':servlets').projectDir = file('./src/main/webapp/hr/servlets')

@@ -1,10 +1,14 @@
 apply plugin: 'java'
 dependencies {
-implementation files('../../WEB-INF/lib/bl.jar')
-implementation files('../../WEB-INF/lib/dbdl.jar')
 implementation files('../../WEB-INF/lib/hr-common.jar') //data about enums
-implementation fileTree(dir: '../../../../lib', include: ['*.jar'])
-implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])
+implementation files('../../WEB-INF/lib/dbdl.jar')
+implementation files('../../WEB-INF/lib/bl.jar')
+implementation fileTree(dir: '../../../../../../../lib', include: ['*.jar'])		// Requires .jar files of tomcat to compile. This should work on a VM. The relative path looks fragile though
+implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])			// Requires gson.jar, mysql-connector.jar, itext7.jar to compile.
+
+implementation project(':common')			// build of this sub-project should be complete
+implementation project(':dbdl')				// build of this sub-project should be complete
+implementation project(':bl')				// build of this sub-project should be complete
 }
 
 jar {

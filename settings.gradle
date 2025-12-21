@@ -1,5 +1,8 @@
 rootProject.name = 'JavaProjects-webapp'
-include 'common', 'dbdl', 'bl', 'servlets'
+
+// Purpose: "These subprojects exist in my multi-module project"
+// Tells Gradle: "Scan these directories and recognize them as subprojects"
+include 'common', 'dbdl', 'bl', 'servlets'		
 
 project(':common').projectDir = file('./src/main/webapp/hr/common')
 project(':dbdl').projectDir = file('./src/main/webapp/hr/dbdl')

@@ -3,6 +3,14 @@ id 'java'
 id 'war'
 }
 
+dependencies {				//without adding these dependencies, there is no reason for gradle to build these sub-projects. Sub-projects are only built if it is explicitly declared that they are needed.
+    implementation project(':common')
+    implementation project(':dbdl')
+    implementation project(':bl')
+    implementation project(':servlets')
+}
+
 war {
 	archiveFileName = 'JavaProjects-webapp.war'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE		//mysql.jar is being included twice in build path
 }

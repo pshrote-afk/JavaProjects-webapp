@@ -28,10 +28,10 @@ implementation files('../../WEB-INF/lib/bl.jar')
 
 implementation 'com.google.code.gson:gson:2.13.1'
 implementation ('com.mysql:mysql-connector-j:9.3.0') {
-    exclude group: 'com.google.protobuf'
+    exclude group: 'com.google.protobuf'		 // protobuf-java-4.29.0.jar was being downloaded by com.google.protobuf as mysqlconnector.jar depends on it. But we used mysqlconnector.jar previously without needing anything else. Hence removed it.
 }
 implementation ('com.itextpdf:itext7-core:7.1.17') {
-    exclude group: 'org.bouncycastle'
+    exclude group: 'org.bouncycastle'			// org.bouncycastle was downloading pdf and certificate signing jars like bcprov-jdk15on.jar, bcpkix-jdk15on.jar. There were consuming unnecessary space.
 }
 
 implementation project(':common')			// build of this sub-project should be complete

@@ -11,26 +11,22 @@ import com.thinking.machines.hr.dl.dao.*;
 
 public class DBTestServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-	try
-	{
-	Connection connection = DAOConnection.getConnection();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-            response.getWriter().println("DB Connected: " + !connection.isClosed());
-        } catch(DAOException dao)
-	{
-		System.out.println(dao.getMessage());
+		try {
+			Connection connection = DAOConnection.getConnection();
+
+			response.getWriter().println("DB Connected: " + !connection.isClosed());
+		} catch (DAOException dao) {
+			System.out.println(dao.getMessage());
+		}
+
+		catch (SQLException e) {
+			e.printStackTrace(response.getWriter());
+		} catch (Exception e) {
+			e.printStackTrace(response.getWriter());
+		}
+
 	}
-
-	catch (SQLException e) {
-            e.printStackTrace(response.getWriter());
-        }
-	catch(Exception e)
-	{
-	e.printStackTrace(response.getWriter());
-	}
-
-    }
 }

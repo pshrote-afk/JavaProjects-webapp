@@ -2,6 +2,7 @@
 bin/
 build/
 src/main/webapp/WEB-INF/lib/*.jar
+src/main/webapp/test-export-pdf-feature
 #Common
 src/main/webapp/hr/common/classes/*
 !src/main/webapp/hr/common/classes/.gitkeep

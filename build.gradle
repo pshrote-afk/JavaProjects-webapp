@@ -3,6 +3,12 @@ id 'java'
 id 'war'
 }
 
+allprojects {
+    repositories {
+        mavenCentral()		// while building war, gradle does not check folders. So it needs a reference to the repo from where we got all dependencies
+    }
+}
+
 dependencies {				//without adding these dependencies, there is no reason for gradle to build these sub-projects. Sub-projects are only built if it is explicitly declared that they are needed.
     implementation project(':common')
     implementation project(':dbdl')

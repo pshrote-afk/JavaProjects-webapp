@@ -1,7 +1,14 @@
 apply plugin: 'java'
 
 repositories {
-mavenCentral()  	// This tells Gradle where to download from. mavenCentral() = https://repo1.maven.org/maven2/
+// This tells Gradle where to download from. mavenCentral() = https://repo1.maven.org/maven2/
+  mavenCentral {
+        metadataSources {
+            artifact()
+            mavenPom()		// This tells Gradle to accept the artifact even if POM metadata is incomplete, which allows it to fetch mysql-connector-j:9.3.0 successfully.
+        }
+   }
+
 }
 
 dependencies {
@@ -14,8 +21,18 @@ implementation files('../../WEB-INF/lib/dbdl.jar')
 implementation files('../../WEB-INF/lib/bl.jar')
 
 
-// Runtime libraries (gson, mysql, itext)
-implementation fileTree(dir: '../../WEB-INF/lib', include: ['*.jar'])			// Requires gson.jar, mysql-connector.jar, itext7.jar to compile.
+
+// external jars → WEB-INF/lib
+//how will these go to WEB-INF/lib/ ?
+//We will write a task to do that
+
+implementation 'com.google.code.gson:gson:2.13.1'
+implementation ('com.mysql:mysql-connector-j:9.3.0') {
+    exclude group: 'com.google.protobuf'		 // protobuf-java-4.29.0.jar was being downloaded by com.google.protobuf as mysqlconnector.jar depends on it. But we used mysqlconnector.jar previously without needing anything else. Hence removed it.
+}
+implementation ('com.itextpdf:itext7-core:7.1.17') {
+    exclude group: 'org.bouncycastle'			// org.bouncycastle was downloading pdf and certificate signing jars like bcprov-jdk15on.jar, bcpkix-jdk15on.jar. There were consuming unnecessary space.
+}
 
 implementation project(':common')			// build of this sub-project should be complete
 implementation project(':dbdl')				// build of this sub-project should be complete
@@ -24,4 +41,10 @@ implementation project(':bl')				// build of this sub-project should be complete
 
 jar {
 destinationDirectory = file('../../WEB-INF/lib')
+}
+
+tasks.named('compileJava') {
+    dependsOn ':common:jar'
+    dependsOn ':dbdl:jar'
+    dependsOn ':bl:jar' 
 }

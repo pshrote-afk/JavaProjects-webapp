@@ -27,8 +27,12 @@ implementation files('../../WEB-INF/lib/bl.jar')
 //We will write a task to do that
 
 implementation 'com.google.code.gson:gson:2.13.1'
-implementation 'com.mysql:mysql-connector-j:9.3.0'
-implementation 'com.itextpdf:itext7-core:7.1.17'
+implementation ('com.mysql:mysql-connector-j:9.3.0') {
+    exclude group: 'com.google.protobuf'
+}
+implementation ('com.itextpdf:itext7-core:7.1.17') {
+    exclude group: 'org.bouncycastle'
+}
 
 implementation project(':common')			// build of this sub-project should be complete
 implementation project(':dbdl')				// build of this sub-project should be complete

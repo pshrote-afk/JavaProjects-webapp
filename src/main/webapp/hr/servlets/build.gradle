@@ -47,12 +47,4 @@ tasks.named('compileJava') {
     dependsOn ':common:jar'
     dependsOn ':dbdl:jar'
     dependsOn ':bl:jar' 
-    dependsOn 'copyCustomLibs'
-}
-
-tasks.register('copyCustomLibs', Copy) {
-    from configurations.runtimeClasspath.filter { 
-        !it.name.matches('(hr-common|dbdl|bl)\\.jar')		// Runtime Classpath already contains (hr-common.jar, dbdl.jar, bl.jar), hence exclude them
-    }
-    into '../../WEB-INF/lib'
 }

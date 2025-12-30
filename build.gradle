@@ -22,13 +22,49 @@ tasks.register('downloadJquery') {
 
         new URL('https://code.jquery.com/jquery-3.7.1.min.js')
             .withInputStream { i ->
-                new File(targetDir, 'jquery.js').bytes = i.bytes		//renamed from jquery.min.js to jquery.js because .html files refer to it that way
+                new File(targetDir, 'jquery.min.js').bytes = i.bytes
             }
+    }
+}
+
+tasks.register('downloadJqeuryUiWithTheme') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery/jquery-ui-humanity-theme')
+
+        new URL('https://code.jquery.com/ui/1.14.1/jquery-ui.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery-ui.min.js').bytes = i.bytes
+            }
+
+        new URL('https://code.jquery.com/ui/1.14.1/themes/humanity/jquery-ui.min.css')
+            .withInputStream{ i ->
+                new File(targetDir, 'jquery-ui.min.css').bytes = i.bytes
+            }
+
+        // to get images folder of humanity theme
+        def imgDir = file('src/main/webapp/jquery/jquery-ui-humanity-theme/images')
+        imgDir.mkdirs()
+        def zipFile = file('build/jquery-ui-1.14.1.zip')
+        new URL('https://jqueryui.com/resources/download/jquery-ui-themes-1.14.1.zip')
+            .withInputStream { i ->
+                zipFile.bytes = i.bytes
+            }
+        //unzip
+        copy {
+            from zipTree(zipFile)
+            into imgDir
+            include '**/humanity/images/**'
+	    eachFile {
+		it.path = it.path.replaceFirst('.*/humanity/images','')
+	    }
+        }
+
     }
 }
 
 tasks.named('processResources') {
     dependsOn downloadJquery
+    dependsOn downloadJqeuryUiWithTheme
 }
 
 

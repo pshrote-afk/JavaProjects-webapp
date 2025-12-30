@@ -62,9 +62,21 @@ tasks.register('downloadJqeuryUiWithTheme') {
     }
 }
 
+tasks.register('downloadJqueryValidation') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery.validate.min.js').bytes = i.bytes
+            }
+    }
+}
+
 tasks.named('processResources') {
     dependsOn downloadJquery
     dependsOn downloadJqeuryUiWithTheme
+    dependsOn downloadJqueryValidation
 }
 
 

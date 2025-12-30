@@ -16,6 +16,22 @@ dependencies {				//without adding these dependencies, there is no reason for gr
     implementation project(':servlets')
 }
 
+tasks.register('downloadJquery') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://code.jquery.com/jquery-3.7.1.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery.js').bytes = i.bytes		//renamed from jquery.min.js to jquery.js because .html files refer to it that way
+            }
+    }
+}
+
+tasks.named('processResources') {
+    dependsOn downloadJquery
+}
+
+
 war {
 	archiveFileName = 'JavaProjects-webapp.war'
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE		// bl.jar is being included twice in build path - expected behavior in a multi-project build. // EXCLUDE ignores duplicates, and leaves the file that was first copied

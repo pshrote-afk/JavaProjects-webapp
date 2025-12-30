@@ -43,7 +43,9 @@ tasks.register('downloadJqeuryUiWithTheme') {
 
         // to get images folder of humanity theme
         def imgDir = file('src/main/webapp/jquery/jquery-ui-humanity-theme/images')
+	def zipDir = file('build')
         imgDir.mkdirs()
+	zipDir.mkdirs()
         def zipFile = file('build/jquery-ui-1.14.1.zip')
         new URL('https://jqueryui.com/resources/download/jquery-ui-themes-1.14.1.zip')
             .withInputStream { i ->

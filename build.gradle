@@ -29,7 +29,7 @@ tasks.register('downloadJquery') {
 
 tasks.register('downloadJqeuryUiWithTheme') {
     doLast {
-        def targetDir = file('src/main/webapp/jquery/jquery-ui-humanity-theme')
+        def targetDir = file('src/main/webapp/jquery')
 
         new URL('https://code.jquery.com/ui/1.14.1/jquery-ui.min.js')
             .withInputStream { i ->
@@ -42,7 +42,7 @@ tasks.register('downloadJqeuryUiWithTheme') {
             }
 
         // to get images folder of humanity theme
-        def imgDir = file('src/main/webapp/jquery/jquery-ui-humanity-theme/images')
+        def imgDir = file('src/main/webapp/jquery/images')
 	    def zipDir = file('build')
         imgDir.mkdirs()
 	    zipDir.mkdirs()

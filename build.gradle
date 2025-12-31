@@ -16,6 +16,111 @@ dependencies {				//without adding these dependencies, there is no reason for gr
     implementation project(':servlets')
 }
 
+tasks.register('downloadJquery') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://code.jquery.com/jquery-3.7.1.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery.min.js').bytes = i.bytes
+            }
+    }
+}
+
+tasks.register('downloadJqueryUiWithTheme') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://code.jquery.com/ui/1.14.1/jquery-ui.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery-ui.min.js').bytes = i.bytes
+            }
+
+        new URL('https://code.jquery.com/ui/1.14.1/themes/humanity/jquery-ui.min.css')
+            .withInputStream{ i ->
+                new File(targetDir, 'jquery-ui.min.css').bytes = i.bytes
+            }
+
+        // to get images folder of humanity theme
+        def imgDir = file('src/main/webapp/jquery/images')
+	    def zipDir = file('build')
+        imgDir.mkdirs()
+	    zipDir.mkdirs()
+        def zipFile = file('build/jquery-ui-1.14.1.zip')
+        new URL('https://jqueryui.com/resources/download/jquery-ui-themes-1.14.1.zip')
+            .withInputStream { i ->
+                zipFile.bytes = i.bytes
+            }
+        //unzip
+        copy {
+            from zipTree(zipFile)
+            into imgDir
+            include '**/humanity/images/**'
+	        eachFile {
+		        it.path = it.path.replaceFirst('.*/humanity/images','')
+	        }
+        }
+
+    }
+}
+
+tasks.register('downloadJqueryValidation') {
+    doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery.validate.min.js').bytes = i.bytes
+            }
+    }
+}
+
+tasks.register('downloadJTable') {
+     doLast {
+        def targetDir = file('src/main/webapp/jquery')
+
+        new URL('https://www.thebluebook.com/js/js/jtable.2.4.0/jquery.jtable.min.js')
+            .withInputStream { i ->
+                new File(targetDir, 'jquery.jtable.min.js').bytes = i.bytes
+            }
+
+        new URL('https://raw.githubusercontent.com/hikalkan/jtable/master/lib/themes/jqueryui/jtable_jqueryui.min.css')
+            .withInputStream { i ->
+                new File(targetDir, 'jtable_jqueryui.min.css').bytes = i.bytes
+            }
+
+        //get images related to jtable
+         file('build').mkdirs()
+
+        def zipFile = file('build/jTable.2.4.0.zip')    // not using this .zip to get .css and .js files of jtable because the url is a bit unreliable. But if we use .zip only for image download, then even if image download fails - only images wont be displayed - but the code will stay functional
+        def imgDir = file('src/main/webapp/jquery')     // because jquery/jtable_jqueryui.min.js expects images in the same folder
+        
+        new URL('https://www.nuget.org/api/v2/package/jTable/2.4.0')
+            .withInputStream { i -> 
+                zipFile.bytes = i.bytes 
+            }
+
+        copy {
+            from zipTree(zipFile)
+            into imgDir
+            include 'content/Scripts/jtable/themes/jqueryui/**'
+            eachFile {
+                it.path = it.name;
+            }
+        
+        }
+
+    }
+}
+
+tasks.named('processResources') {
+    dependsOn downloadJquery
+    dependsOn downloadJqueryUiWithTheme
+    dependsOn downloadJqueryValidation
+    dependsOn downloadJTable
+}
+
+
 war {
 	archiveFileName = 'JavaProjects-webapp.war'
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE		// bl.jar is being included twice in build path - expected behavior in a multi-project build. // EXCLUDE ignores duplicates, and leaves the file that was first copied

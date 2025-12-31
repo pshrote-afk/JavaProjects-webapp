@@ -4,15 +4,12 @@
 <head>
     <title>HR Application</title>
     <link rel='stylesheet' type='text/css' href='css/styles.css'>
-    </link>
-    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.css">
-    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.structure.css">
-    <link rel="stylesheet" href="jquery/jquery-ui-humanity-theme/jquery-ui.theme.css">
-    <link rel="stylesheet" href="jquery/jquery-jtable/themes/jqueryui/jtable_jqueryui.min.css"> <!-- jtable's css -->
+    <link rel="stylesheet" href="jquery/jquery-ui.min.css">
+    <link rel="stylesheet" href="jquery/jtable_jqueryui.min.css"> <!-- jtable's css -->
 
-    <script src='jquery/jquery.js'></script>
-    <script src='jquery/jquery-ui-humanity-theme/jquery-ui.js'></script>
-    <script src='jquery/jquery-validation/jquery.validate.js'></script>
+    <script src='jquery/jquery.min.js'></script>
+    <script src='jquery/jquery-ui.min.js'></script>
+    <script src='jquery/jquery.validate.min.js'></script>
 
     <script>
         function initPanelButtons() {
@@ -38,9 +35,9 @@
                 document.getElementById("contentRightPanel").innerHTML = "";
                 document.getElementById("contentRightPanel").appendChild(homeContent);
 		
-		testHeader1 = document.createElement("h6");
-		testHeader1.innerHTML = "#Test 1. Testing automatic deployment (when PR is merged)"
-		document.getElementById("contentRightPanel").appendChild(testHeader1);
+		//testHeader1 = document.createElement("h6");
+		//testHeader1.innerHTML = "#Test 1. Testing automatic deployment (when PR is merged)"
+		//document.getElementById("contentRightPanel").appendChild(testHeader1);
 
                 globalContentRightPanel = "home";
                 reloadPanelButtons();
@@ -68,7 +65,7 @@
         <!-- Header container starts here -->
         <div class='header-container'>
             <img src='images/logo.png' class='logo'>
-            <div class='brand-name'>Filler Company Name</div>
+            <div class='brand-name'>Filler Company Name test</div>
             <div class='user-panel'>
                 <u>Username</u>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='logout'>Logout</a><br>

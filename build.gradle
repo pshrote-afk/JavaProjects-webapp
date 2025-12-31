@@ -27,7 +27,7 @@ tasks.register('downloadJquery') {
     }
 }
 
-tasks.register('downloadJqeuryUiWithTheme') {
+tasks.register('downloadJqueryUiWithTheme') {
     doLast {
         def targetDir = file('src/main/webapp/jquery')
 
@@ -83,12 +83,39 @@ tasks.register('downloadJTable') {
             .withInputStream { i ->
                 new File(targetDir, 'jquery.jtable.min.js').bytes = i.bytes
             }
+
+        new URL('https://raw.githubusercontent.com/hikalkan/jtable/master/lib/themes/jqueryui/jtable_jqueryui.min.css')
+            .withInputStream { i ->
+                new File(targetDir, 'jtable_jqueryui.min.css').bytes = i.bytes
+            }
+
+        //get images related to jtable
+         file('build').mkdirs()
+
+        def zipFile = file('build/jTable.2.4.0.zip')    // not using this .zip to get .css and .js files of jtable because the url is a bit unreliable. But if we use .zip only for image download, then even if image download fails - only images wont be displayed - but the code will stay functional
+        def imgDir = file('src/main/webapp/jquery')     // because jquery/jtable_jqueryui.min.js expects images in the same folder
+        
+        new URL('https://www.nuget.org/api/v2/package/jTable/2.4.0')
+            .withInputStream { i -> 
+                zipFile.bytes = i.bytes 
+            }
+
+        copy {
+            from zipTree(zipFile)
+            into imgDir
+            include 'content/Scripts/jtable/themes/jqueryui/**'
+            eachFile {
+                it.path = it.name;
+            }
+        
+        }
+
     }
 }
 
 tasks.named('processResources') {
     dependsOn downloadJquery
-    dependsOn downloadJqeuryUiWithTheme
+    dependsOn downloadJqueryUiWithTheme
     dependsOn downloadJqueryValidation
     dependsOn downloadJTable
 }

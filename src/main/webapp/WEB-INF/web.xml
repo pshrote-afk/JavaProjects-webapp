@@ -28,6 +28,13 @@
     <display-name>JavaProjects-webapp</display-name>
 
     <request-character-encoding>UTF-8</request-character-encoding>
+
+<servlet>
+<servlet-name>InitServlet</servlet-name>
+<servlet-class>com.thinking.machines.hr.servlets.InitServlet</servlet-class>
+<load-on-startup>1</load-on-startup>
+</servlet>
+
 <servlet>
 <servlet-name>GetAllCourses</servlet-name>
 <servlet-class>com.thinking.machines.hr.servlets.courses.GetAllCourses</servlet-class>
